@@ -4,14 +4,14 @@ module Dashboard
       def self.dataset_definition
         {
           fields: [
-            Geckoboard::DateField.new(:date, name: 'Date'),
-            Geckoboard::NumberField.new(:started_apps, name: 'Started applications'),
-            Geckoboard::NumberField.new(:submitted_apps, name: 'Submitted applications'),
-            Geckoboard::NumberField.new(:submitted_passported_apps, name: 'Submitted passported applications'),
-            Geckoboard::NumberField.new(:submitted_nonpassported_apps, name: 'Submitted nonpassported applications'),
-            Geckoboard::NumberField.new(:total_submitted_apps, name: 'Total submitted applications'),
-            Geckoboard::NumberField.new(:failed_apps, name: 'Failed applications'),
-            Geckoboard::NumberField.new(:delegated_func_apps, name: 'Delegated function applications')
+            Geckoboard::DateField.new(:date, name: 'Date').to_hash,
+            Geckoboard::NumberField.new(:started_apps, name: 'Started applications').to_hash,
+            Geckoboard::NumberField.new(:submitted_apps, name: 'Submitted applications').to_hash,
+            Geckoboard::NumberField.new(:submitted_passported_apps, name: 'Submitted passported applications').to_hash,
+            Geckoboard::NumberField.new(:submitted_nonpassported_apps, name: 'Submitted nonpassported applications').to_hash,
+            Geckoboard::NumberField.new(:total_submitted_apps, name: 'Total submitted applications').to_hash,
+            Geckoboard::NumberField.new(:failed_apps, name: 'Failed applications').to_hash,
+            Geckoboard::NumberField.new(:delegated_func_apps, name: 'Delegated function applications').to_hash
           ],
           unique_by: [:date]
         }
