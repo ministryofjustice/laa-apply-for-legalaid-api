@@ -15,6 +15,7 @@ gem 'pg_dump_anonymize'
 gem 'puma', '~> 5.3'
 gem 'rails', '~> 6.1.4'
 gem 'regexp-examples'
+gem 'rexml'
 gem 'savon', '~> 2.12.1'
 gem 'sentry-rails'
 gem 'sentry-ruby'
@@ -73,7 +74,8 @@ gem 'libreconv'
 gem 'business'
 
 # Monitoring
-gem 'prometheus_exporter'
+gem 'prometheus_exporter', '=0.4.17'
+gem 'webrick'
 
 # Generating Fake applications for tests and admin user
 gem 'factory_bot_rails', '>= 5.2.0'

@@ -632,8 +632,7 @@ GEM
     sys-uname (1.2.2)
       ffi (~> 1.1)
     temple (0.8.2)
-    terminal-table (3.0.0)
-      unicode-display_width (~> 1.1, >= 1.1.1)
+    terminal-table (1.6.0)
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -641,7 +640,7 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2021.1)
       tzinfo (>= 1.0.0)
-    unicode-display_width (1.7.0)
+    unicode-display_width (2.0.0)
     vcr (6.0.0)
     virtus (2.0.0)
       axiom-types (~> 0.1)
@@ -671,6 +670,7 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -735,7 +735,7 @@ DEPENDENCIES
   pagy
   pg
   pg_dump_anonymize
-  prometheus_exporter
+  prometheus_exporter (= 0.4.17)
   pry-byebug
   pry-rescue
   pry-stack_explorer
@@ -745,6 +745,7 @@ DEPENDENCIES
   rails_admin (~> 2.1)
   redis-namespace
   regexp-examples
+  rexml
   rspec-rails (~> 5.0)
   rspec_junit_formatter
   rubocop
@@ -773,10 +774,11 @@ DEPENDENCIES
   webdrivers (~> 4.6)
   webmock
   webpacker (~> 5)
+  webrick
   wicked_pdf
 
 RUBY VERSION
-   ruby 2.7.1p83
+   ruby 3.0.0p0
 
 BUNDLED WITH
    2.2.15
