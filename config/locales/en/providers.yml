@@ -595,6 +595,8 @@ en:
     proceedings_before_the_courts:
       show:
         h1-heading: Are the proceedings, for which funding is being sought, currently, before the court?
+        label:
+          details_of_proceedings_before_the_court: Please give details.
     proceedings_types:
       create:
         search_and_select: Search for and select a proceeding

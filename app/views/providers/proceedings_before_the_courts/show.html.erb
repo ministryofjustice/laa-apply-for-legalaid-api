@@ -2,18 +2,19 @@
 
 <%= form_with(
       model: @form,
-      url: providers_legal_aid_application_proceedings_before_the_court_path,
+      url: providers_application_proceeding_type_proceedings_before_the_court_path,
       method: :patch,
       local: true
     ) do |form| %>
 
     <%= form.govuk_radio_buttons_fieldset :proceedings_before_the_court,
                                           legend: {text: (content_for(:page_title)), size: 'xl', tag: 'h1'} do %>
-        <%= form.govuk_radio_button :proceedings_before_the_court, true do %>
-          <%= form.govuk_text_area :details_of_proceedings_before_the_court, rows: 5 %>
+        <%= form.govuk_radio_button :proceedings_before_the_court, true, label: {text: t('generic.yes')} do %>
+          <%= form.govuk_text_area :details_of_proceedings_before_the_court, label: {text: t('.label.details_of_proceedings_before_the_court')}, rows: 5 %>
         <% end %>
-        <%= form.govuk_radio_button :proceedings_before_the_court, false %>
+        <%= form.govuk_radio_button :proceedings_before_the_court, false, label: {text: t('generic.no')} %>
     <% end %>
+
 
     <div class="govuk-!-padding-bottom-2"></div>
 

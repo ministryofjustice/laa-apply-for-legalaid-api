@@ -8,7 +8,7 @@ module ChancesOfSuccesses
 
     before_validation :clear_details_of_proceedings_before_the_court
     validates :proceedings_before_the_court, presence: true, unless: :draft?
-    validates :details_of_proceedings_before_the_court, presence: true, if: proc { |form| form.proceedings_before_the_court.to_s == 'true' }
+    validates :details_of_proceedings_before_the_court, presence: true, if: proc { |form| form.proceedings_before_the_court.to_s == 'true' }, unless: :draft?
 
     private
 
