@@ -48,6 +48,7 @@ Given('I have created and submitted an application') do
     :application,
     :with_everything,
     :with_passported_state_machine,
+    :with_merits_submitted_at,
     :initiated,
     provider: create(:provider)
   )

@@ -62,7 +62,7 @@ module Reports
                :pretty_success_prospect,
                :success_prospect_details,
                :statement_of_case_uploaded?,
-                to: :chances_of_success
+               to: :chances_of_success
 
       delegate :firm,
                :username, to: :provider

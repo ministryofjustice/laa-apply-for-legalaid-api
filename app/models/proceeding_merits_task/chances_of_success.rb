@@ -36,8 +36,6 @@ module ProceedingMeritsTask
       legal_aid_application.attachments.statement_of_case.any?
     end
 
-    def legal_aid_application
-      application_proceeding_type.legal_aid_application
-    end
+    delegate :legal_aid_application, to: :application_proceeding_type
   end
 end
