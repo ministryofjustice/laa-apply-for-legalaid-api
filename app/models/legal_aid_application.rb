@@ -14,6 +14,7 @@ class LegalAidApplication < ApplicationRecord
   belongs_to :provider, optional: false
   belongs_to :office, optional: true
   has_many :application_proceeding_types, dependent: :destroy
+  has_many :chances_of_success, through: :application_proceeding_types
   has_many :attachments, dependent: :destroy
   has_many :proceeding_types, through: :application_proceeding_types
   has_one :benefit_check_result, dependent: :destroy
@@ -60,6 +61,7 @@ class LegalAidApplication < ApplicationRecord
   validates :provider, presence: true
 
   delegate :bank_transactions, to: :applicant, allow_nil: true
+  delegate :chances_of_success, to: :lead_application_proceeding_type, allow_nil: true
   delegate :full_name, to: :applicant, prefix: true, allow_nil: true
   delegate :case_ccms_reference, to: :ccms_submission, allow_nil: true
   delegate :applicant_enter_means!,
@@ -394,12 +396,13 @@ class LegalAidApplication < ApplicationRecord
     state_machine_proxy.complete_non_passported_means!(self)
   end
 
-  def chances_of_success
-    lead_application_proceeding_type.chances_of_success
+  def merits_complete!
+    update!(merits_submitted_at: Time.current) unless merits_submitted_at?
+    ActiveSupport::Notifications.instrument 'dashboard.application_submitted'
   end
 
   def summary_state
-    return :submitted if chances_of_success&.submitted_at
+    return :submitted if merits_submitted_at
 
     :in_progress
   end

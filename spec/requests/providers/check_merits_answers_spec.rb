@@ -8,6 +8,7 @@ RSpec.describe 'check merits answers requests', type: :request do
     let(:application) do
       create :legal_aid_application,
              :with_everything,
+             :with_application_proceeding_type,
              :provider_entering_merits
     end
 
@@ -49,7 +50,8 @@ RSpec.describe 'check merits answers requests', type: :request do
         expect(response.body).to have_change_link(:incident_details, providers_legal_aid_application_date_client_told_incident_path)
         expect(response.body).to have_change_link(:opponent_details, providers_legal_aid_application_opponent_path)
         expect(response.body).to have_change_link(:statement_of_case, providers_legal_aid_application_statement_of_case_path(application))
-        expect(response.body).to have_change_link(:success_likely, providers_legal_aid_application_chances_of_success_index_path)
+        expect(response.body).to have_change_link(:success_likely,
+                                                  providers_application_proceeding_type_chances_of_success_index_path(application.lead_application_proceeding_type))
       end
 
       it 'displays the question When did your client tell you about the latest domestic abuse incident' do
@@ -106,6 +108,7 @@ RSpec.describe 'check merits answers requests', type: :request do
     let(:application) do
       create :legal_aid_application,
              :with_everything,
+             :with_application_proceeding_type,
              :checking_merits_answers
     end
     let(:params) { {} }
@@ -122,8 +125,7 @@ RSpec.describe 'check merits answers requests', type: :request do
         let(:submit_button) { { continue_button: 'Continue' } }
 
         it 'updates the record' do
-          application.create_chances_of_success!
-          expect { subject }.to change { application.chances_of_success.reload.submitted_at }.from(nil)
+          expect { subject }.to change { application.reload.merits_submitted_at }.from(nil)
           expect(application.reload).to be_generating_reports
         end
       end
@@ -175,6 +177,7 @@ RSpec.describe 'check merits answers requests', type: :request do
     let(:application) do
       create :legal_aid_application,
              :with_everything,
+             :with_application_proceeding_type,
              :checking_merits_answers
     end
 
@@ -199,7 +202,7 @@ RSpec.describe 'check merits answers requests', type: :request do
 
       describe 'redirection' do
         it 'redirects to chances_of_success page' do
-          expect(response).to redirect_to providers_legal_aid_application_chances_of_success_index_path
+          expect(response).to redirect_to providers_application_proceeding_type_chances_of_success_index_path(application.lead_application_proceeding_type)
         end
       end
     end

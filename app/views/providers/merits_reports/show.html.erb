@@ -31,7 +31,7 @@
         incident: @legal_aid_application.latest_incident,
         statement_of_case: @legal_aid_application.statement_of_case,
         opponent: @legal_aid_application.opponent,
-        chances_of_success: @legal_aid_application.chances_of_success,
+        chances_of_success: @application_proceeding_type.chances_of_success,
         read_only: true
       ) %>
 <% end %>

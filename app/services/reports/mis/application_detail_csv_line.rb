@@ -9,7 +9,7 @@ module Reports
                :benefit_check_result,
                :ccms_submission,
                :created_at,
-               :chances_of_success,
+               :lead_application_proceeding_type,
                :office,
                :other_assets_declaration,
                :outstanding_mortgage_amount,
@@ -20,11 +20,14 @@ module Reports
                :provider,
                :opponent,
                :savings_amount,
+               :merits_submitted_at,
                :shared_ownership,
                :used_delegated_functions?,
                :used_delegated_functions_on,
                :used_delegated_functions_reported_on,
                :vehicle, to: :laa
+
+      delegate :chances_of_success, to: :laa
 
       delegate :case_ccms_reference, to: :ccms_submission
 
@@ -59,7 +62,7 @@ module Reports
                :pretty_success_prospect,
                :success_prospect_details,
                :statement_of_case_uploaded?,
-               :submitted_at, to: :chances_of_success
+                to: :chances_of_success
 
       delegate :firm,
                :username, to: :provider
@@ -295,7 +298,7 @@ module Reports
         @line << success_prospect_details
         @line << statement_of_case_uploaded?
         @line << created_at.strftime('%Y-%m-%d')
-        @line << submitted_at.strftime('%Y-%m-%d')
+        @line << merits_submitted_at.strftime('%Y-%m-%d')
       end
 
       def yesno(value)

@@ -52,11 +52,11 @@ module Dashboard
       end
 
       def self.total_submitted_applications(date)
-        ProceedingMeritsTask::ChancesOfSuccess.where('DATE(submitted_at) <= ?', date).count
+        LegalAidApplication.where('DATE(merits_submitted_at) <= ?', date).count
       end
 
       def self.submitted_applications(date)
-        ProceedingMeritsTask::ChancesOfSuccess.where('DATE(submitted_at) = ?', date).count
+        submitted_applications_on(date).count
       end
 
       def self.submitted_passported_apps(date)
@@ -76,10 +76,7 @@ module Dashboard
       end
 
       def self.submitted_applications_on(date)
-        
-        binding.pry
-        
-        ProceedingMeritsTask::ChancesOfSuccess.all.where('DATE(submitted_at) = ?', date).map(&:application_proceeding_type)
+        LegalAidApplication.where('DATE(merits_submitted_at) = ?', date)
       end
 
       private_class_method :submitted_applications_on

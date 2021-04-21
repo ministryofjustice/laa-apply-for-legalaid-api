@@ -34,7 +34,7 @@ class DashboardEventHandler
 
   def valid_events
     %w[application_created provider_updated ccms_submission_saved firm_created feedback_created
-       chances_of_success_submitted delegated_functions_used declined_open_banking applicant_emailed]
+       application_submitted delegated_functions_used declined_open_banking applicant_emailed]
   end
 
   def application_created
@@ -62,7 +62,7 @@ class DashboardEventHandler
     Dashboard::FeedbackItemJob.perform_later(Feedback.find(payload[:feedback_id]))
   end
 
-  def chances_of_success_submitted
+  def application_submitted
     Dashboard::UpdaterJob.perform_later('Applications')
   end
 

@@ -3,9 +3,9 @@ require 'rails_helper'
 module Reports
   module MIS
     RSpec.describe ApplicationDetailsReport do
-      let!(:unsubmitted_applications) { create_list :legal_aid_application, 3, :with_passported_state_machine }
-      let!(:submitted_applications) { create_list :legal_aid_application, 3, :with_passported_state_machine, :at_assessment_submitted }
-      let!(:applications_being_submitted) { create :legal_aid_application, :with_passported_state_machine, :at_submitting_assessment }
+      let!(:unsubmitted_applications) { create_list :legal_aid_application, 3, :with_passported_state_machine, :with_proceeding_types }
+      let!(:submitted_applications) { create_list :legal_aid_application, 3, :with_passported_state_machine, :at_assessment_submitted, :with_proceeding_types, :with_merits_submitted_at  }
+      let!(:applications_being_submitted) { create :legal_aid_application, :with_passported_state_machine, :at_submitting_assessment, :with_proceeding_types, :with_merits_submitted_at }
       let(:report) { described_class.new }
 
       describe '#run' do

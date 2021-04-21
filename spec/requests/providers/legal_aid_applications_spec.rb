@@ -192,6 +192,7 @@ RSpec.describe 'providers legal aid application requests', type: :request do
           create :legal_aid_application,
                  :with_applicant,
                  :with_everything,
+                 merits_submitted_at: Time.zone.today,
                  used_delegated_functions: true,
                  substantive_application_deadline_on: Time.zone.today + 3.days
         end

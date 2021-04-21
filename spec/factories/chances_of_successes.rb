@@ -8,7 +8,6 @@ FactoryBot.define do
       details_of_proceedings_before_the_court { Faker::Lorem.paragraph }
       success_prospect { 'marginal' }
       success_prospect_details { Faker::Lorem.paragraph }
-      submitted_at { Faker::Time.backward }
     end
 
     trait :without_optional_text do
@@ -17,7 +16,6 @@ FactoryBot.define do
       details_of_proceedings_before_the_court { nil }
       success_prospect { 'likely' }
       success_prospect_details { nil }
-      submitted_at { Faker::Time.backward }
     end
   end
 end

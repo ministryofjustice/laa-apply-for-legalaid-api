@@ -259,31 +259,39 @@ RSpec.describe LegalAidApplication, type: :model do
     end
   end
 
+  describe '#merits_complete!' do
+    let!(:legal_aid_application) { create(:legal_aid_application, :with_applicant) }
+
+    let(:date) { Date.new(2021, 1, 7) }
+
+    it 'updates the application merits_submitted_at attribute' do
+      travel_to(date) do
+        legal_aid_application.merits_complete!
+        expect(legal_aid_application.reload.merits_submitted_at).to eq(date)
+      end
+    end
+
+    it 'calls on rails notification service' do
+      expect(ActiveSupport::Notifications).to receive(:instrument).with(any_args)
+      legal_aid_application.merits_complete!
+    end
+  end
+
   describe '#summary_state' do
-    let(:chances_of_success) { nil }
-    let(:application_proceeding_type) { create :application_proceeding_type, chances_of_success: chances_of_success }
-    subject(:legal_aid_application) do
-      create :legal_aid_application, application_proceeding_types: [application_proceeding_type]
-    end
+    let!(:legal_aid_application) { create(:legal_aid_application, :with_applicant, merits_submitted_at: merits_submitted_at) }
 
-    it 'returns :in_progress summary state' do
-      expect(legal_aid_application.summary_state).to eq(:in_progress)
-    end
-
-    context 'with chances_of_success object' do
-      let(:submitted_at) { nil }
-      let(:chances_of_success) { create :chances_of_success, submitted_at: submitted_at }
-
-      it 'still returns :in_progress summary state' do
+    context 'merits not completed' do
+      let(:merits_submitted_at) { nil }
+      it 'returns :in_progress summary state' do
         expect(legal_aid_application.summary_state).to eq(:in_progress)
       end
+    end
 
-      context 'merits submitted' do
-        let(:submitted_at) { Faker::Time.backward }
+    context 'merits completed' do
+      let(:merits_submitted_at) { Faker::Time.backward }
 
-        it 'returns :in_progress summary state' do
-          expect(legal_aid_application.summary_state).to eq(:submitted)
-        end
+      it 'returns :in_progress summary state' do
+        expect(legal_aid_application.summary_state).to eq(:submitted)
       end
     end
   end

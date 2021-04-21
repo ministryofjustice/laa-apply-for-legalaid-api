@@ -3,9 +3,8 @@ require 'rails_helper'
 module Providers
   module ProceedingMeritsTask
     RSpec.describe SuccessProspectsController, type: :request do
-      let!(:chances_of_success) { create :chances_of_success, application_proceeding_type: application_proceeding_type }
-      let!(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types }
-      let!(:application_proceeding_type) { legal_aid_application.lead_application_proceeding_type }
+      let!(:legal_aid_application) { create :legal_aid_application, application_proceeding_types: [application_proceeding_type] }
+      let!(:application_proceeding_type) { create :application_proceeding_type, :with_chances_of_success }
       let(:provider) { legal_aid_application.provider }
 
       describe 'GET /providers/application_proceeding_type/:id/success_prospects' do

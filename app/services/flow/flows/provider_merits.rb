@@ -23,7 +23,10 @@ module Flow
           check_answers: :check_merits_answers
         },
         proceedings_before_the_courts: {
-          path: ->(application) { urls.providers_legal_aid_application_proceedings_before_the_court_path(application) },
+          path: ->(application) do
+            apt = application.lead_application_proceeding_type
+            urls.providers_application_proceeding_type_proceedings_before_the_court_path(apt)
+          end,
           forward: :statement_of_cases,
           check_answers: :check_merits_answers
         },

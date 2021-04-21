@@ -24,10 +24,13 @@ module Reports
                used_delegated_functions: used_delegated_functions,
                used_delegated_functions_on: used_delegated_functions_on,
                used_delegated_functions_reported_on: used_delegated_functions_reported_on,
-               own_vehicle: false
+               own_vehicle: false,
+               merits_submitted_at: Time.current
       end
 
-      let(:application_proceeding_type) { create :application_proceeding_type, chances_of_success: chances_of_success }
+      let(:application_proceeding_type) do
+        create :application_proceeding_type, chances_of_success: chances_of_success
+      end
 
       let(:applicant) do
         create :applicant,
@@ -93,8 +96,7 @@ module Reports
       let(:chances_of_success) do
         create :chances_of_success,
                success_prospect: prospect,
-               application_purpose: purpose,
-               submitted_at: submitted_at
+               application_purpose: purpose
       end
 
       let(:proceeding_types) { [proceeding_type] }

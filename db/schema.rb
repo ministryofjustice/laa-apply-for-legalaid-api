@@ -471,7 +471,7 @@ ActiveRecord::Schema.define(version: 2021_04_21_094326) do
     t.boolean "student_finance"
     t.date "used_delegated_functions_reported_on"
     t.datetime "discarded_at"
-    t.datetime "merits_completed_at"
+    t.datetime "merits_submitted_at"
     t.index ["applicant_id"], name: "index_legal_aid_applications_on_applicant_id"
     t.index ["application_ref"], name: "index_legal_aid_applications_on_application_ref", unique: true
     t.index ["discarded_at"], name: "index_legal_aid_applications_on_discarded_at"

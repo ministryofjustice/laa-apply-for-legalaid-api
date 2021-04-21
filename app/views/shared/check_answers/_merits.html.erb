@@ -130,7 +130,7 @@
   <dl class="govuk-summary-list govuk-!-margin-bottom-2">
     <%= check_answer_link(
           name: :success_likely,
-          url: providers_application_proceeding_type_chances_of_success_index_path(application_proceeding_type),
+          url: providers_application_proceeding_type_chances_of_success_index_path(@application_proceeding_type),
           question: t('.items.prospects_of_success'),
           answer: yes_no(chances_of_success.success_likely),
           read_only: read_only
@@ -140,7 +140,7 @@
   <dl class="govuk-summary-list govuk-!-margin-bottom-2">
     <%= check_answer_link(
           name: :success_prospect,
-          url: providers_application_proceeding_type_chances_of_success_index_path(application_proceeding_type),
+          url: providers_application_proceeding_type_chances_of_success_index_path(@application_proceeding_type),
           question: t('.items.success_prospect'),
           answer: t("shared.forms.success_prospect.#{chances_of_success.success_prospect}"),
           read_only: read_only

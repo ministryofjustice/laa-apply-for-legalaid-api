@@ -237,8 +237,8 @@ FactoryBot.define do
       end
     end
 
-    trait :with_merits_completed_at do
-      merits_completed_at { Time.current }
+    trait :with_merits_submitted_at do
+      merits_submitted_at { Time.current }
     end
 
     trait :with_substantive_scope_limitation do
@@ -437,7 +437,6 @@ FactoryBot.define do
       with_vehicle
       with_transaction_period
       with_other_assets_declaration
-      with_proceeding_types
       with_policy_disregards
       with_savings_amount
       with_open_banking_consent
@@ -473,6 +472,19 @@ FactoryBot.define do
 
     trait :with_positive_benefit_check_result do
       benefit_check_result { build :benefit_check_result, :positive }
+    end
+
+    trait :with_application_proceeding_type do
+      transient do
+        proceeding_types_count { 1 }
+      end
+
+      after(:create) do |application, evaluator|
+        application.proceeding_types = create_list(:proceeding_type, evaluator.proceeding_types_count)
+        application.application_proceeding_types.each do |apt|
+          create(:chances_of_success, :with_optional_text, application_proceeding_type: apt)
+        end
+      end
     end
 
     trait :passported do

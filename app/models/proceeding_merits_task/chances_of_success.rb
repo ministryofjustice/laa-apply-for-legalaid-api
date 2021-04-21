@@ -25,7 +25,7 @@ module ProceedingMeritsTask
 
     def submit!
       update!(submitted_at: Time.current) unless submitted_at?
-      ActiveSupport::Notifications.instrument 'dashboard.chances_of_success_submitted'
+      ActiveSupport::Notifications.instrument 'dashboard.application_submitted'
     end
 
     def pretty_success_prospect
@@ -34,6 +34,10 @@ module ProceedingMeritsTask
 
     def statement_of_case_uploaded?
       legal_aid_application.attachments.statement_of_case.any?
+    end
+
+    def legal_aid_application
+      application_proceeding_type.legal_aid_application
     end
   end
 end
