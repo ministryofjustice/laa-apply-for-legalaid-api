@@ -2,7 +2,6 @@ module Providers
   module ProceedingMeritsTask
     class ChancesOfSuccessController < ProviderBaseController
       def index
-        legal_aid_application
         @form = ChancesOfSuccesses::SuccessLikelyForm.new(model: chances_of_success)
       end
 
@@ -11,7 +10,6 @@ module Providers
 
         return if save_continue_or_draft(@form)
 
-        legal_aid_application
         render :index
       end
 

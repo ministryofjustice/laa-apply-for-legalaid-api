@@ -9,7 +9,7 @@ module Providers
     def continue
       unless draft_selected?
         legal_aid_application.generate_reports! if legal_aid_application.may_generate_reports?
-        chances_of_success.submit!
+        legal_aid_application.complete!
       end
       continue_or_draft
     end
@@ -23,10 +23,6 @@ module Providers
 
     def application_proceeding_type
       @application_proceeding_type ||= legal_aid_application.lead_application_proceeding_type
-    end
-
-    def chances_of_success
-      @chances_of_success ||= legal_aid_application.chances_of_success || legal_aid_application.build_chances_of_success
     end
   end
 end
