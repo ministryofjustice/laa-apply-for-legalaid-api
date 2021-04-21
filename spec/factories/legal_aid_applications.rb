@@ -216,7 +216,7 @@ FactoryBot.define do
           default_df_sl = pt.default_delegated_functions_scope_limitation || create(:scope_limitation, :delegated_functions, joined_proceeding_type: pt)
           apt.application_proceeding_types_scope_limitations << AssignedSubstantiveScopeLimitation.new(scope_limitation: default_subst_sl)
           apt.application_proceeding_types_scope_limitations << AssignedDfScopeLimitation.new(scope_limitation: default_df_sl)
-          create(:chances_of_success, :with_optional_text, application_proceeding_type: apt, submitted_at: Time.zone.today)
+          create(:chances_of_success, :with_optional_text, application_proceeding_type: apt)
         end
       end
     end
@@ -235,6 +235,10 @@ FactoryBot.define do
         AssignedSubstantiveScopeLimitation.create!(application_proceeding_type_id: apt.id,
                                                    scope_limitation_id: sl.id)
       end
+    end
+
+    trait :with_merits_completed_at do
+      merits_completed_at { Time.current }
     end
 
     trait :with_substantive_scope_limitation do
@@ -433,6 +437,7 @@ FactoryBot.define do
       with_vehicle
       with_transaction_period
       with_other_assets_declaration
+      with_proceeding_types
       with_policy_disregards
       with_savings_amount
       with_open_banking_consent
