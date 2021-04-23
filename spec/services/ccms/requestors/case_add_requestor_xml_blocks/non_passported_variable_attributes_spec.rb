@@ -21,8 +21,6 @@ module CCMS
                  :with_everything,
                  :with_applicant_and_address,
                  :with_negative_benefit_check_result,
-                 :with_proceeding_types,
-                 :with_substantive_scope_limitation,
                  populate_vehicle: true,
                  with_bank_accounts: 2,
                  provider: provider,
@@ -30,7 +28,7 @@ module CCMS
                  percentage_home: percentage_home
         end
 
-        let(:application_proceeding_type) { legal_aid_application.application_proceeding_types.first }
+        let!(:application_proceeding_type) { create :application_proceeding_type, :with_proceeding_type_scope_limitation, legal_aid_application: legal_aid_application }
         let(:ccms_reference) { '300000054005' }
         let(:submission) { create :submission, :case_ref_obtained, legal_aid_application: legal_aid_application, case_ccms_reference: ccms_reference }
         let(:cfe_submission) { create :cfe_submission, legal_aid_application: legal_aid_application }

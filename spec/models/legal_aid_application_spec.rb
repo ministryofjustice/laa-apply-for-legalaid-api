@@ -161,6 +161,27 @@ RSpec.describe LegalAidApplication, type: :model do
     end
   end
 
+  describe '#lead_application_proceeding_type' do
+    context 'application proceeding types exist' do
+      let!(:legal_aid_application) do
+        create :legal_aid_application, :with_applicant
+      end
+      let!(:application_proceeding_type1) { create :application_proceeding_type, lead_proceeding: true, legal_aid_application: legal_aid_application }
+      let!(:application_proceeding_type2) { create :application_proceeding_type, lead_proceeding: false, legal_aid_application: legal_aid_application }
+
+      it 'returns the lead application proceeding type' do
+        expect(legal_aid_application.lead_application_proceeding_type).to eq application_proceeding_type1
+      end
+    end
+    context 'application proceeding types do not exist' do
+      let(:legal_aid_application) { create :legal_aid_application, :with_applicant }
+
+      it 'is true' do
+        expect(legal_aid_application.lead_application_proceeding_type).to eq nil
+      end
+    end
+  end
+
   describe '#pre_dwp_check?' do
     let(:state) { :initiated }
     let!(:legal_aid_application) { create :legal_aid_application, :with_applicant, state }

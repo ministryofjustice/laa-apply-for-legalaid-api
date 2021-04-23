@@ -18,9 +18,7 @@ module Reports
                savings_amount: savings_amount,
                other_assets_declaration: other_assets_declaration,
                opponent: opponent,
-               proceeding_types: proceeding_types,
                ccms_submission: ccms_submission,
-               application_proceeding_types: [application_proceeding_type],
                used_delegated_functions: used_delegated_functions,
                used_delegated_functions_on: used_delegated_functions_on,
                used_delegated_functions_reported_on: used_delegated_functions_reported_on,
@@ -28,8 +26,15 @@ module Reports
                merits_submitted_at: Time.current
       end
 
+      let!(:chances_of_success) do
+        create :chances_of_success,
+               success_prospect: prospect,
+               application_purpose: purpose,
+               application_proceeding_type: application_proceeding_type
+      end
+
       let(:application_proceeding_type) do
-        create :application_proceeding_type, chances_of_success: chances_of_success
+        create :application_proceeding_type, legal_aid_application: legal_aid_application, proceeding_type: proceeding_type
       end
 
       let(:applicant) do
@@ -93,13 +98,6 @@ module Reports
                bail_conditions_set_details: bail_conditions_set_details
       end
 
-      let(:chances_of_success) do
-        create :chances_of_success,
-               success_prospect: prospect,
-               application_purpose: purpose
-      end
-
-      let(:proceeding_types) { [proceeding_type] }
       let(:proceeding_type) do
         create :proceeding_type,
                meaning: 'Proceeding type meaning',

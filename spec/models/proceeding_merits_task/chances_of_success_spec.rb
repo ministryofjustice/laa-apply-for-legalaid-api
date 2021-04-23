@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ProceedingMeritsTask::ChancesOfSuccess, type: :model do
   describe '#pretty_success_propsect' do
-    let(:chances_of_success) { create :chances_of_success, success_prospect: prospect }
+    let(:chances_of_success) { create :chances_of_success, :with_application_proceeding_type, success_prospect: prospect }
 
     context 'likely' do
       let(:prospect) { 'likely' }
