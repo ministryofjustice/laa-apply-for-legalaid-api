@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :chances_of_success, class: 'ProceedingMeritsTask::ChancesOfSuccess' do
-    application_proceeding_type
+    trait :with_application_proceeding_type do
+      before(:create) do |chances_of_success|
+        create(:application_proceeding_type, chances_of_success: chances_of_success)
+      end
+    end
 
     trait :with_optional_text do
       application_purpose { Faker::Lorem.paragraph }
