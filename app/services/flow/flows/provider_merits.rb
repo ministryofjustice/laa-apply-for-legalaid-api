@@ -23,12 +23,14 @@ module Flow
           check_answers: :check_merits_answers
         },
         proceedings_before_the_courts: {
+            # :nocov:
           path: ->(application) do
             apt = application.lead_application_proceeding_type
             urls.providers_application_proceeding_type_proceedings_before_the_court_path(apt)
           end,
           forward: :statement_of_cases,
           check_answers: :check_merits_answers
+            # :nocov:
         },
         statement_of_cases: {
           path: ->(application) { urls.providers_legal_aid_application_statement_of_case_path(application) },
