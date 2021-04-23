@@ -23,11 +23,6 @@ module ProceedingMeritsTask
       success_prospects.except(:likely).keys
     end
 
-    def submit!
-      update!(submitted_at: Time.current) unless submitted_at?
-      ActiveSupport::Notifications.instrument 'dashboard.application_submitted'
-    end
-
     def pretty_success_prospect
       PRETTY_SUCCESS_PROSPECTS[success_prospect.to_sym]
     end
