@@ -55,7 +55,7 @@ Documentation of certain parts of the system which are particularly complex can 
 ## Dependencies
 
 * Ruby version
-    * Ruby version 3.0.0
+    * Ruby version 3.0.1
     * Rails 6.0.3
 
 * System dependencies
