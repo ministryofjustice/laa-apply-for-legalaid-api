@@ -3,7 +3,6 @@ Feature: Citizen journey
   Scenario: Start citizen journey until TrueLayer Auth
     Given An application has been created
     And a "true layer bank" exists in the database
-    And I execute a step that returns true
     Then I visit the start of the financial assessment
     Then I should be on a page showing 'Your legal aid application'
     Then I click link 'Start'

@@ -1,3 +1,4 @@
-Given(/I execute a step that returns true/) do
-  false
+Given(/the CCMS payload skip attribute should be true/) do
+  x = 'false'
+  expect(x).to eq 'true'
 end
