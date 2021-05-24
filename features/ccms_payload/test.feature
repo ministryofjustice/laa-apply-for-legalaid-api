@@ -1,7 +1,6 @@
 Feature: Civil application journeys
   @javascript
   Scenario: I am able to return to my legal aid applications
-    Given I am logged in as a provider
-    Given I visit the application service
-    And I click link "Start"
-    Then the CCMS payload skip attribute should be true
+    Given I start the application with a negative benefit check result
+    Then I should be on a page showing "We need to check your client's financial eligibility"
+    Then The case should be flagged for manual review
