@@ -219,6 +219,8 @@ en:
         items:
           client_declaration: Client declaration
           client_declaration_answer: Read & agreed
+          cost_override_question: Do you want to request a higher cost limit?
+          enter_cost_reasons: Tell us why you need a higher cost limit
           proceedings_currently_before_court: Proceedings currently before court
           prospects_of_success: Is the chance of a successful outcome 50% or better?
           success_prospect: What is the chance of a successful outcome?

@@ -118,6 +118,8 @@
   <%= render 'shared/check_answers/section_break' if statement_of_case&.statement.present? %>
 
   <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+
+
     <%= check_answer_link(
           name: :success_likely,
           url: providers_merits_task_list_chances_of_success_index_path(@application_proceeding_type),
@@ -138,4 +140,24 @@
   </dl>
 
   <div class='govuk-body'><%= chances_of_success.success_prospect_details %></div>
+
+  <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+    <%= check_answer_link(
+          name: :emergency_cost_requested,
+          url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+          question: t('.items.cost_override_question'),
+          answer: @legal_aid_application.emergency_cost_requested,
+          read_only: read_only
+        ) %>
+  </dl>
+
+  <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+  <%= check_answer_link(
+        name: :emergency_cost_requested,
+        url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+        question: t('.items.enter_cost_reasons'),
+        answer: @legal_aid_application.emergency_cost_reasons,
+        read_only: read_only
+      ) %>
+  </dl>
 </section>
