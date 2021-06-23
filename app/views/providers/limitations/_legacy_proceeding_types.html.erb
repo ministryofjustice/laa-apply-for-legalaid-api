@@ -1,3 +1,8 @@
+<%= form_with(model: @form,
+              url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+              method: :patch,
+              local: true) do |form| %>
+
 <%= page_template(page_title: t('.h1-heading')) do %>
 
   <h2 class="govuk-heading-m">
@@ -34,6 +39,27 @@
   <p><strong><%= t('.allowable_work') %></strong><%= application_proceeding_type.substantive_scope_limitation.description %></p>
   </p>
 
+  <p class="govuk-body">
+  <p><%= t('.default_limit_is') %> <strong><%= gds_number_to_currency(@legal_aid_application.default_delegated_functions_cost_limitation,  precision: 0) %></strong></p>
+  <%= form.govuk_radio_buttons_fieldset(:emergency_cost_override,
+                                        legend: { size: 's', tag: 'h2', text: t('.cost_override_question') }) do %>
+    <%= form.govuk_radio_button(:emergency_cost_override, true, link_errors: true, label: {text: t('generic.yes')} ) do %>
+      <%= form.govuk_text_field(
+            :emergency_cost_requested,
+            label: {text: t('.enter_cost_limit')},
+            value: number_to_currency_or_original_string(@form.emergency_cost_requested),
+            prefix_text: t('currency.gbp'),
+            width: 'one-third',
+            ) %>
+
+      <%= form.govuk_text_area(
+            :emergency_cost_reasons,
+            label: {text: t('.enter_cost_reasons')}
+          ) %>
+    <% end %>
+    <%= form.govuk_radio_button(:emergency_cost_override, false, label: {text:  t('generic.no')}) %>
+  <% end %>
+
   <div class="govuk-!-padding-bottom-6"></div>
 
   <%= next_action_buttons_with_form(
@@ -42,4 +68,5 @@
         show_draft: true
       ) %>
 
+<% end %>
 <% end %>

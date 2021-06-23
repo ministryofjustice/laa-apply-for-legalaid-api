@@ -60,20 +60,18 @@
           legal_aid_application: @legal_aid_application
       ) %>
 
-  <% if Setting.allow_multiple_proceedings? %>
-    <% if @legal_aid_application.used_delegated_functions? %>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h2 class="govuk-heading-m"><%= t '.emergency_cost_limit' %></h2>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          <p><%= link_to_accessible t('.change'), providers_legal_aid_application_limitations_path(@legal_aid_application), class: 'govuk-link govuk-link-right' %></p>
-        </div>
+  <% if @legal_aid_application.used_delegated_functions? %>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m"><%= t '.emergency_cost_limit' %></h2>
       </div>
-      <%= render(
-            'shared/check_answers/emergency_costs',
-            legal_aid_application: @legal_aid_application,
-            read_only: @read_only
-          ) %>
-    <% end %>
+      <div class="govuk-grid-column-one-third">
+        <p><%= link_to_accessible t('.change'), providers_legal_aid_application_limitations_path(@legal_aid_application), class: 'govuk-link govuk-link-right' %></p>
+      </div>
+    </div>
+    <%= render(
+          'shared/check_answers/emergency_costs',
+          legal_aid_application: @legal_aid_application,
+          read_only: @read_only
+        ) %>
   <% end %>
