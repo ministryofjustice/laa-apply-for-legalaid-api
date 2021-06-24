@@ -3,8 +3,8 @@
               method: :patch,
               local: true) do |form| %>
 
-<%= page_template(page_title: t('.h1-heading')) do %>
-
+<%= page_template page_title: t('.h1-heading'), template: :basic, form: form do %>
+  <h1 class="govuk-heading-xl"><%= t('.h1-heading') %></h1>
   <h2 class="govuk-heading-m">
     <%= t('.proceedings_heading') %>
   </h2>
