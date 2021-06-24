@@ -119,7 +119,6 @@
 
   <dl class="govuk-summary-list govuk-!-margin-bottom-2">
 
-
     <%= check_answer_link(
           name: :success_likely,
           url: providers_merits_task_list_chances_of_success_index_path(@application_proceeding_type),
@@ -141,23 +140,39 @@
 
   <div class='govuk-body'><%= chances_of_success.success_prospect_details %></div>
 
-  <dl class="govuk-summary-list govuk-!-margin-bottom-2">
-    <%= check_answer_link(
-          name: :emergency_cost_requested,
-          url: providers_legal_aid_application_limitations_path(@legal_aid_application),
-          question: t('.items.cost_override_question'),
-          answer: @legal_aid_application.emergency_cost_requested,
-          read_only: read_only
-        ) %>
-  </dl>
+  <% if read_only %>
+    <h2 class="govuk-heading-m">
+      <%= t '.cost-override-heading' %>
+    </h2>
 
-  <dl class="govuk-summary-list govuk-!-margin-bottom-2">
-  <%= check_answer_link(
-        name: :emergency_cost_requested,
-        url: providers_legal_aid_application_limitations_path(@legal_aid_application),
-        question: t('.items.enter_cost_reasons'),
-        answer: @legal_aid_application.emergency_cost_reasons,
-        read_only: read_only
-      ) %>
-  </dl>
+    <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+      <%= check_answer_link(
+            name: :emergency_cost_override,
+            url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+            question: t('.items.override_requested'),
+            answer: yes_no(@legal_aid_application.emergency_cost_override),
+            read_only: true
+          ) %>
+    </dl>
+
+    <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+      <%= check_answer_link(
+            name: :emergency_cost_requested,
+            url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+            question: t('.items.cost_override_question'),
+            answer: gds_number_to_currency(@legal_aid_application.emergency_cost_requested,  precision: 0),
+            read_only: true
+          ) %>
+    </dl>
+
+    <dl class="govuk-summary-list govuk-!-margin-bottom-2">
+    <%= check_answer_link(
+          name: :emergency_cost_reasons,
+          url: providers_legal_aid_application_limitations_path(@legal_aid_application),
+          question: t('.items.enter_cost_reasons'),
+          answer: @legal_aid_application.emergency_cost_reasons,
+          read_only: true
+        ) %>
+    </dl>
+  <% end %>
 </section>
