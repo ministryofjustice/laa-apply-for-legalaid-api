@@ -91,6 +91,7 @@ Rails.application.configure do
 
   config.active_storage.service = :amazon
   config.x.application.host_url = "https://#{config.x.application.host}"
+  config.middleware.use Rack::Attack if %w[staging uat localhost].include?(config.x.application.host)
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false

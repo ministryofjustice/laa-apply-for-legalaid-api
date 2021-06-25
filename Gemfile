@@ -13,6 +13,7 @@ gem 'loofah', '>= 2.2.3'
 gem 'pg'
 gem 'pg_dump_anonymize'
 gem 'puma', '~> 5.3'
+gem 'rack-attack' # prevent/reduce php phishing attacks
 gem 'rails', '~> 6.1.4'
 gem 'regexp-examples'
 gem 'savon', '~> 2.12.1'
