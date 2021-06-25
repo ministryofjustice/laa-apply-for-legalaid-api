@@ -39,6 +39,16 @@ RSpec.describe Providers::LimitationsController, type: :request do
       it 'does not have a details section' do
         expect(parsed_response_body.css('details')).to be_empty
       end
+
+      context 'when delegated functions have been used' do
+        let(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types, :with_delegated_functions }
+        let(:proceeding_type) { legal_aid_application.proceeding_types.first }
+        let(:provider) { legal_aid_application.provider }
+
+        it 'shows the correct text' do
+          expect(unescaped_response_body).to include(I18n.t('providers.limitations.legacy_proceeding_types.cost_override_question'))
+        end
+      end
     end
 
     context 'when the multiple proceedings flag is on' do
