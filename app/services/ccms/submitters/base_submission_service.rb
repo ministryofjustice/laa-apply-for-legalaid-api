@@ -5,6 +5,7 @@ module CCMS
 
       CCMS_SUBMISSION_ERRORS = [
         CCMSError,
+        CCMSUnsuccessfulResponseError,
         Savon::HTTPError,
         Savon::SOAPFault,
         Savon::Error,
@@ -30,39 +31,22 @@ module CCMS
                                  response: xml_response
       end
 
-      def create_failure_history(from_state, error, xml_request, xml_response)
-        SubmissionHistory.create submission: submission,
-                                 from_state: from_state,
-                                 to_state: :failed,
-                                 success: false,
-                                 details: error,
-                                 request: xml_request,
-                                 response: xml_response
-      end
-
-      def create_ccms_failure_history(from_state, error, xml_request)
+      def create_ccms_failure_history(from_state, error, xml_request, response: nil)
         SubmissionHistory.create submission: submission,
                                  from_state: from_state,
                                  to_state: :failed,
                                  success: false,
                                  request: xml_request,
-                                 details: error.is_a?(Exception) ? format_exception(error) : error
+                                 details: error.is_a?(Exception) ? format_exception(error) : error,
+                                 response: response
       end
 
       def format_exception(error)
         [error.class, error.message, error.backtrace].flatten.join("\n")
       end
 
-      def handle_unsuccessful_response(xml_request, xml_response)
-        Sentry.capture_exception(xml_response)
-        create_failure_history(submission.aasm_state, nil, xml_request, xml_response)
-        submission.fail! unless submission.failed?
-      end
-
-      def handle_exception(exception, xml_request)
-        Sentry.capture_exception(exception)
-        create_ccms_failure_history(submission.aasm_state, exception, xml_request)
-        submission.fail! unless submission.failed?
+      def handle_exception(exception, xml_request, response: nil)
+        create_ccms_failure_history(submission.aasm_state, exception, xml_request, response: response)
       end
     end
   end
