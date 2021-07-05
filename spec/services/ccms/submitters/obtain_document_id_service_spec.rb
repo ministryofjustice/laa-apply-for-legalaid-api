@@ -131,16 +131,18 @@ module CCMS
           let(:error) { [CCMS::CCMSError, Savon::Error, StandardError] }
 
           before do
+            fake_error = error.sample
             allow_any_instance_of(CCMS::Requestors::DocumentIdRequestor).to receive(:transaction_request_id).and_return('20190301030405123456')
-            expect_any_instance_of(CCMS::Requestors::DocumentIdRequestor).to receive(:call).and_raise(error.sample, 'Failed to obtain document ids for')
+            expect_any_instance_of(CCMS::Requestors::DocumentIdRequestor).to receive(:call).and_raise(fake_error, 'Failed to obtain document ids for')
+            expect { subject.call }.to raise_error(fake_error, 'Failed to obtain document ids for')
           end
 
-          it 'changes the submission state to failed' do
-            expect { subject.call }.to change { submission.aasm_state }.to 'failed'
+          it 'does not change the state' do
+            expect(submission.aasm_state).to eq 'applicant_ref_obtained'
           end
 
           it 'writes a history record' do
-            expect { subject.call }.to change { SubmissionHistory.count }.by(2)
+            expect(SubmissionHistory.count).to eq 2
             expect(history.from_state).to eq 'applicant_ref_obtained' # this is failing gets case_submitted
             expect(history.to_state).to eq 'failed'
             expect(history.success).to be false
@@ -154,26 +156,26 @@ module CCMS
         context 'when requesting document_ids' do
           before do
             expect_any_instance_of(CCMS::Requestors::DocumentIdRequestor).to receive(:call).and_raise(CCMSError, 'failure populating document hash')
+            expect { subject.call }.to raise_error(CCMSError, 'failure populating document hash')
           end
 
           let(:statement_of_case) { create :statement_of_case, :with_original_and_pdf_files_attached, legal_aid_application: legal_aid_application }
 
-          it 'changes the submission state to failed' do
-            expect { subject.call }.to change { submission.aasm_state }.to 'failed'
+          it 'does not change the state' do
+            expect(submission.aasm_state).to eq 'applicant_ref_obtained'
           end
 
           it 'changes the document state to failed' do
-            subject.call
             expect(submission.submission_documents.first.status).to eq 'failed'
           end
 
           it 'writes a history record' do
-            expect { subject.call }.to change { SubmissionHistory.count }.by(2)
+            expect(SubmissionHistory.count).to eq 2
             expect(history.from_state).to eq 'applicant_ref_obtained'
             expect(history.to_state).to eq 'failed'
             expect(history.success).to be false
             expect(history.details).to match(/CCMS::CCMSError/)
-            expect(history.details).to match(/Failed to obtain document ids for/)
+            expect(history.details).to match(/failure populating document hash/)
             expect(history.request).to be_nil
             expect(history.response).to be_nil
           end

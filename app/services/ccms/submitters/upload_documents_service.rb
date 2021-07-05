@@ -11,6 +11,7 @@ module CCMS
         create_history('case_created', submission.aasm_state, nil, nil) if submission.complete!
       rescue *CCMS_SUBMISSION_ERRORS => e
         handle_exception(e, nil)
+        raise
       end
 
       private

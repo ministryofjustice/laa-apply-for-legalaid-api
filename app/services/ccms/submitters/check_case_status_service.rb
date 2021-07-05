@@ -9,6 +9,7 @@ module CCMS
         process_response(parser)
       rescue *CCMS_SUBMISSION_ERRORS => e
         handle_exception(e, xml_request)
+        raise
       end
 
       private

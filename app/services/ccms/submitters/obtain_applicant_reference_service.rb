@@ -7,6 +7,7 @@ module CCMS
         process_records(parser)
       rescue *CCMS_SUBMISSION_ERRORS => e
         handle_exception(e, xml_request)
+        raise
       end
 
       def response
