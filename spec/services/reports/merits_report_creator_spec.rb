@@ -6,8 +6,10 @@ RSpec.describe Reports::MeritsReportCreator do
            :with_application_proceeding_type,
            :with_lead_proceeding_type,
            :with_everything,
-           :generating_reports
+           :generating_reports,
+           ccms_submission: ccms_submission
   end
+  let(:ccms_submission) { create :ccms_submission, :case_ref_obtained }
 
   subject do
     # dont' match on path - webpacker keeps changing the second part of the path
@@ -18,7 +20,6 @@ RSpec.describe Reports::MeritsReportCreator do
 
   describe '.call' do
     it 'attaches merits_report.pdf to the application' do
-      expect_any_instance_of(CCMS::Requestors::ReferenceDataRequestor).to receive(:call)
       expect(Providers::MeritsReportsController.renderer).to receive(:render).and_call_original
       subject
       legal_aid_application.reload
@@ -29,6 +30,54 @@ RSpec.describe Reports::MeritsReportCreator do
     it 'does not attach a report if one already exists' do
       create :attachment, :merits_report, legal_aid_application: legal_aid_application
       expect { subject }.not_to change { Attachment.count }
+    end
+
+    context 'ccms case ref does not exist' do
+      let(:legal_aid_application) do
+        create :legal_aid_application,
+               :with_application_proceeding_type,
+               :with_lead_proceeding_type,
+               :with_everything,
+               :generating_reports,
+               ccms_submission: ccms_submission
+      end
+      let(:ccms_submission) { create :ccms_submission }
+
+      before do
+        allow_any_instance_of(CCMS::Submission).to receive(:process!).with(any_args).and_return(true)
+      end
+
+      it 'processes the existing ccms submission' do
+        expect(legal_aid_application.reload.ccms_submission).to receive(:process!)
+        subject
+      end
+    end
+
+    context 'ccms submission does not exist' do
+      let(:legal_aid_application) do
+        create :legal_aid_application,
+               :with_application_proceeding_type,
+               :with_lead_proceeding_type,
+               :with_everything,
+               :generating_reports
+      end
+      let(:ccms_submission) { create :ccms_submission }
+
+      before do
+        RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
+        allow(legal_aid_application).to receive(:create_ccms_submission).and_return(ccms_submission)
+        allow_any_instance_of(CCMS::Submission).to receive(:process!).with(any_args).and_return(true)
+      end
+
+      after do
+        RSpec::Mocks.configuration.allow_message_expectations_on_nil = false
+      end
+
+      it 'creates a ccms submission' do
+        expect(legal_aid_application.reload).to receive(:create_ccms_submission)
+        expect(nil).to receive(:process!)
+        subject
+      end
     end
   end
 end
