@@ -20,6 +20,10 @@ module Reports
       return if legal_aid_application.case_ccms_reference
 
       legal_aid_application.create_ccms_submission unless legal_aid_application.ccms_submission
+      process_ccms_submission
+    end
+
+    def process_ccms_submission
       legal_aid_application.ccms_submission.process!
     end
 

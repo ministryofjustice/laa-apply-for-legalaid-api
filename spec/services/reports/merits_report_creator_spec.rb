@@ -51,32 +51,26 @@ RSpec.describe Reports::MeritsReportCreator do
         expect(legal_aid_application.reload.ccms_submission).to receive(:process!)
         subject
       end
-    end
 
-    context 'ccms submission does not exist' do
-      let(:legal_aid_application) do
-        create :legal_aid_application,
-               :with_application_proceeding_type,
-               :with_lead_proceeding_type,
-               :with_everything,
-               :generating_reports
-      end
-      let(:ccms_submission) { create :ccms_submission }
+      context 'ccms submission does not exist' do
+        let(:legal_aid_application) do
+          create :legal_aid_application,
+                 :with_application_proceeding_type,
+                 :with_lead_proceeding_type,
+                 :with_everything,
+                 :generating_reports
+        end
+        let(:ccms_submission) { create :ccms_submission }
 
-      before do
-        RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
-        allow(legal_aid_application).to receive(:create_ccms_submission).and_return(ccms_submission)
-        allow_any_instance_of(CCMS::Submission).to receive(:process!).with(any_args).and_return(true)
-      end
-
-      after do
-        RSpec::Mocks.configuration.allow_message_expectations_on_nil = false
-      end
-
-      it 'creates a ccms submission' do
-        expect(legal_aid_application.reload).to receive(:create_ccms_submission)
-        expect(nil).to receive(:process!)
-        subject
+        before do
+          allow(legal_aid_application).to receive(:case_ccms_reference).and_return(nil)
+          allow(legal_aid_application).to receive(:create_ccms_submission).and_return(ccms_submission)
+        end
+        it 'creates a ccms submission' do
+          expect(legal_aid_application.reload).to receive(:create_ccms_submission)
+          expect_any_instance_of(described_class).to receive(:process_ccms_submission)
+          subject
+        end
       end
     end
   end
