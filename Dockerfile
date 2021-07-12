@@ -1,4 +1,4 @@
-FROM ruby:2.7.1-alpine3.10
+FROM ruby:3.0.1-alpine3.12
 MAINTAINER apply for legal aid team
 
 ENV \
@@ -36,7 +36,9 @@ RUN apk --no-cache add --virtual build-dependencies \
                   ttf-ubuntu-font-family \
                   wkhtmltopdf \
                   bash \
- && pip3 install awscli
+                  py3-pip
+RUN pip3 install awscli
+
 #  # Install kubectl
 # RUN curl -LO /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 RUN echo $KUBECTL_VERSION

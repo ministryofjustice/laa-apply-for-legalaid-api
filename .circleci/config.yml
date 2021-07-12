@@ -11,7 +11,7 @@ executors:
           GITHUB_TEAM_NAME_SLUG: laa-apply-for-legal-aid
   linting-executor:
     docker:
-      - image: circleci/ruby:2.7.1-node-browsers
+      - image: circleci/ruby:3.0.1-node-browsers
         environment:
           - RAILS_ENV=test
           - TZ: "Europe/London"
@@ -29,7 +29,7 @@ executors:
 
   test-executor:
     docker:
-      - image: circleci/ruby:2.7.1-node-browsers
+      - image: circleci/ruby:3.0.1-node-browsers
         environment:
           GITHUB_TEAM_NAME_SLUG: laa-apply-for-legal-aid
       - image: circleci/postgres:10.5
@@ -206,7 +206,8 @@ jobs:
     executor: basic-executor
     steps:
     - checkout
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 19.03.13
     - *update_packages
     - run: sudo apt-get install -y git-crypt
     - *decrypt_secrets

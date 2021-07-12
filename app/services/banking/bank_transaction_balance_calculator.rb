@@ -27,7 +27,7 @@ module Banking
       txs = acct.bank_transactions.most_recent_first
       calculated_balance = acct.balance
       txs.each do |tx|
-        tx.update(running_balance: calculated_balance)
+        tx.update(running_balance: format('%.2f', calculated_balance))
         calculated_balance -= tx.amount
       end
     end

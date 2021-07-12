@@ -13,7 +13,7 @@ module CFE
     def request_hash
       {
         client_reference_id: legal_aid_application.application_ref,
-        submission_date: legal_aid_application.calculation_date
+        submission_date: legal_aid_application.calculation_date.strftime('%Y-%m-%d')
       }.merge(options)
     end
 

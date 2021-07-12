@@ -48,7 +48,7 @@ Capybara.register_driver :headless_chrome do |app|
     options: browser_options
   }
 
-  Capybara::Selenium::Driver.new app, chrome_options.merge(clear_local_storage: true, clear_session_storage: true)
+  Capybara::Selenium::Driver.new app, **chrome_options.merge(clear_local_storage: true, clear_session_storage: true)
 end
 
 Capybara.default_driver = :headless_chrome
