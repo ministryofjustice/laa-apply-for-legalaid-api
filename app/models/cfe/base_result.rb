@@ -25,6 +25,10 @@ module CFE
       assessment_result == 'eligible'
     end
 
+    def partially_eligible
+      assessment_result == 'partially_eligible'
+    end
+
     def version_4?
       result_hash[:version] == '4'
     end

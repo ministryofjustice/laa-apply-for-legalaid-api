@@ -69,6 +69,10 @@ class ApplicationProceedingType < ApplicationRecord
     "P_#{proceeding_case_id}"
   end
 
+  def pretty_df_date
+    used_delegated_functions_on&.strftime('%F') || 'n/a'
+  end
+
   private
 
   def check_only_one_lead_proceedig
@@ -84,4 +88,5 @@ class ApplicationProceedingType < ApplicationRecord
     rec = self.class.order(proceeding_case_id: :desc).first
     rec.nil? || rec.proceeding_case_id.nil? ? FIRST_PROCEEDING_CASE_ID : rec.proceeding_case_id
   end
+
 end
