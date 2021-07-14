@@ -33,6 +33,10 @@ RSpec.describe Citizens::CashOutgoingsController, type: :request do
         it 'redirects to new action' do
           expect(response).to redirect_to(next_flow_step)
         end
+
+        it 'updates the model attribute for no cash outgoings to false' do
+          expect(legal_aid_application.reload.no_cash_outgoings).to be(false)
+        end
       end
 
       context 'none of the above' do
@@ -40,6 +44,10 @@ RSpec.describe Citizens::CashOutgoingsController, type: :request do
 
         it 'redirects to new action' do
           expect(response).to redirect_to(next_flow_step)
+        end
+
+        it 'updates the model attribute for no cash outgoings to true' do
+          expect(legal_aid_application.reload.no_cash_outgoings).to eq(true)
         end
       end
     end
@@ -94,7 +102,8 @@ RSpec.describe Citizens::CashOutgoingsController, type: :request do
           check_box_child_care: 'true',
           child_care1: '1',
           child_care2: '2',
-          child_care3: '3'
+          child_care3: '3',
+          none_selected: ''
         }
       }
     end

@@ -33,6 +33,10 @@ RSpec.describe Citizens::CashIncomesController, type: :request do
         it 'redirects to new action' do
           expect(response).to redirect_to(next_flow_step)
         end
+
+        it 'updates the model attribute for no cash income to false' do
+          expect(legal_aid_application.reload.no_cash_income).to be(false)
+        end
       end
 
       context 'none of the above' do
@@ -40,6 +44,10 @@ RSpec.describe Citizens::CashIncomesController, type: :request do
 
         it 'redirects to new action' do
           expect(response).to redirect_to(next_flow_step)
+        end
+
+        it 'updates the model attribute for no cash income to true' do
+          expect(legal_aid_application.reload.no_cash_income).to eq(true)
         end
       end
     end
@@ -94,7 +102,8 @@ RSpec.describe Citizens::CashIncomesController, type: :request do
           check_box_benefits: 'true',
           benefits1: '1',
           benefits2: '2',
-          benefits3: '3'
+          benefits3: '3',
+          none_selected: ''
         }
       }
     end
