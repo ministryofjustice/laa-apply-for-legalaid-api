@@ -17,8 +17,7 @@
         <% end %>
       </div>
       <%= form.govuk_radio_divider %>
-      <%= form.govuk_check_box :none_selected, true, '', link_errors: true, multiple: false,
-                               label: {text: t('generic.none_selected')} %>
+      <%= form.govuk_check_box :none_selected, true, '', multiple: false, label: {text: t('generic.none_selected')} %>
     <% end %>
 
     <% if journey == :citizen %>
