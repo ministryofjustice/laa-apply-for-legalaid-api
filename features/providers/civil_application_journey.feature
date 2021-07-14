@@ -296,6 +296,9 @@ Feature: Civil application journeys
     Then I click 'Save and continue'
     Then I should be on a page showing "Covered under an emergency certificate"
     Then I should be on a page showing "Covered under a substantive certificate"
+    When I choose 'Yes'
+    And I enter a emergency cost requested '5000'
+    And I enter legal aid application emergency cost reasons field 'This is why I require extra funding'
     Then I click 'Save and continue'
     Then I should be on a page showing 'receives benefits that qualify for legal aid'
 

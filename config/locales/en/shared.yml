@@ -210,6 +210,7 @@ en:
       merits: &merits
         complete-application-heading: Complete the application
         complete-application-text: By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
+        cost-override-heading: Emergency cost override
         case-details-heading: Case details
         involved-children-heading: Children involved in this application
         opponent-heading: Opponent details
@@ -219,6 +220,9 @@ en:
         items:
           client_declaration: Client declaration
           client_declaration_answer: Read & agreed
+          override_requested: Do you want to request a higher cost limit?
+          cost_override_question: What is the new requested emergency cost limit?
+          enter_cost_reasons: Tell us why you need a higher cost limit.
           proceedings_currently_before_court: Proceedings currently before court
           prospects_of_success: Is the chance of a successful outcome 50% or better?
           success_prospect: What is the chance of a successful outcome?
