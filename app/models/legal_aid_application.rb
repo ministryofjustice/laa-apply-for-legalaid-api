@@ -152,6 +152,9 @@ class LegalAidApplication < ApplicationRecord
   end
 
   def application_proceedings_by_name
+    # The name of this method is misleading - as they are no longer sorted by name, but by the order in
+    # which they were added to the application.
+    #
     types = application_proceeding_types.map do |application_proceeding_type|
       proceeding_type = ProceedingType.find(application_proceeding_type.proceeding_type_id)
       OpenStruct.new({
@@ -160,8 +163,6 @@ class LegalAidApplication < ApplicationRecord
                        application_proceeding_type: application_proceeding_type
                      })
     end
-
-    types.sort_by(&:meaning)
   end
 
   def section_8_proceedings?

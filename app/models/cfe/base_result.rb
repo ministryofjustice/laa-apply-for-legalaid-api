@@ -25,7 +25,7 @@ module CFE
       assessment_result == 'eligible'
     end
 
-    def partially_eligible
+    def partially_eligible?
       assessment_result == 'partially_eligible'
     end
 

@@ -3,9 +3,6 @@ class Dependant < ApplicationRecord
 
   belongs_to :legal_aid_application
 
-  scope :child_relative, -> { where(relationship: 'child_relative') }
-  scope :adult_relative, -> { where(relationship: 'adult_relative') }
-
   DEFAULT_VALUES = {
     in_full_time_education: false,
     relationship: 'child_relative',

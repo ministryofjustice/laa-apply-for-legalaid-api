@@ -15,6 +15,7 @@ module Reports
                :dwp_override,
                :emergency_cost_override?,
                :emergency_cost_requested,
+               :gateway_evidence,
                :involved_children,
                :irregular_incomes,
                :lead_application_proceeding_type,
@@ -80,7 +81,7 @@ module Reports
           'User name',
           'Office ID',
           'CCMS reference number',
-          'Single/Multi Proceedings'
+          'Single/Multi Proceedings',
           'Matter types',
           'No. of proceedings',
           'Proceeding types selected',
@@ -175,6 +176,7 @@ module Reports
         passported_check_result
         dwp_overridden
         delegated_functions
+        default_cost_overrride
         income_details
         main_home_details
         vehicle_details
@@ -197,11 +199,11 @@ module Reports
 
       def application_details
         @line << case_ccms_reference
-        @line << application_proceedig_types.count > 1 ? 'Multi' : 'Single'
+        @line << (application_proceeding_types.count > 1 ? 'Multi' : 'Single')
       end
 
       def proceeding_details
-        @line << proceeding_types.map(&:ccms_matter).sort.join(', ')
+        @line << proceeding_types.map(&:ccms_matter).uniq.sort.join(', ')
         @line << application_proceeding_types.count
         @line << proceeding_types.map(&:meaning).sort.join(', ')
         @line << laspo_question
@@ -220,7 +222,7 @@ module Reports
       end
 
       def dwp_overridden
-        @line << (dwp_override ? 'TRUE' : 'FALSE')
+        @line << yesno(dwp_override)
       end
 
       def delegated_functions
@@ -324,15 +326,10 @@ module Reports
 
       def eligibility
         @line << yesno(cfe_result.eligible?)
-        @line << yesno(cfe_result.partially_eligble?)
+        @line << yesno(cfe_result.partially_eligible?)
         @line << involved_children.count
-
-        # 'Fully eligible (means)?',
-        # 'Partially eligible (means)?',
-        # 'Number of children involved',
-        # 'Supporting evidence uploaded?',
-        # 'Number of items of evidence',
-
+        @line << yesno(gateway_evidence.present?)
+        @line << gateway_evidence_count
       end
 
       def opponent_details
@@ -375,6 +372,11 @@ module Reports
         else
           ''
         end
+      end
+
+
+      def gateway_evidence_count
+        gateway_evidence.present? ? gateway_evidence.pdf_attachments.count : ''
       end
     end
   end

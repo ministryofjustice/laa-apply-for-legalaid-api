@@ -48,6 +48,20 @@ module Reports
                merits_submitted_at: Time.current
       end
 
+
+
+
+
+      # let(:legal_aid_application_with_multiple_proceedings) do
+      #   puts ">>>>>>>>>>>> with mp  #{__FILE__}:#{__LINE__} <<<<<<<<<<<<".yellow
+      #   puts ">>>>>>>>>>>> #{LegalAidApplication.count} #{__FILE__}:#{__LINE__} <<<<<<<<<<<<".yellow
+      #   create :application,
+      #          :with_proceeding_types,
+      #          explicit_proceeding_types: proceeding_types
+      #   puts ">>>>>>>>>>>>  #{__FILE__}:#{__LINE__} <<<<<<<<<<<<".yellow
+      #   puts ">>>>>>>>>>>> #{LegalAidApplication.count} #{__FILE__}:#{__LINE__} <<<<<<<<<<<<".yellow
+      # end
+
       let!(:chances_of_success) do
         create :chances_of_success,
                success_prospect: prospect,
@@ -56,8 +70,6 @@ module Reports
       end
 
       let(:application_proceeding_type) { legal_aid_application.application_proceeding_types.first }
-      #   create :application_proceeding_type, legal_aid_application: legal_aid_application, proceeding_type: proceeding_type
-      # end
 
       let(:applicant) do
         create :applicant,
@@ -172,45 +184,90 @@ module Reports
       let(:used_delegated_functions_on) { Date.new(2020, 1, 1) }
       let(:used_delegated_functions_reported_on) { Date.new(2020, 2, 21) }
 
+      let(:v3_cfe_result) { create :cfe_v3_result }
+
+      before do
+        allow(legal_aid_application).to receive(:cfe_result).and_return(v3_cfe_result)
+      end
+
       describe '.call' do
         let(:headers) { described_class.header_row }
-        let(:data_row) { described_class.call(legal_aid_application) }
+        let(:data_row) {
+          described_class.call(legal_aid_application) }
 
-        context 'application and provider details' do
-          it 'returns the correct values' do
-            expect(value_for('Firm name')).to eq 'Legal beagles'
-            expect(value_for('User name')).to eq 'psr001'
-            expect(value_for('Office ID')).to eq '1T823E'
-            expect(value_for('CCMS reference number')).to eq '42226668880'
-            expect(value_for('DWP Overridden')).to eq 'FALSE'
-            expect(value_for('Case Type')).to eq 'Passported'
-            expect(value_for('Matter type')).to eq 'Domestic Abuse'
-            expect(value_for('Proceeding type selected')).to match(/^Meaning-DA\d{3,4}$/)
-            expect(value_for('Delegated functions used')).to eq 'Yes'
-            expect(value_for('Delegated functions date')).to eq '2020-01-01'
-            expect(value_for('Delegated functions reported')).to eq '2020-02-21'
-          end
+        describe 'application and provider details' do
+          context 'single proceedings' do
+            it 'returns the correct values' do
+              expect(value_for('Firm name')).to eq 'Legal beagles'
+              expect(value_for('User name')).to eq 'psr001'
+              expect(value_for('Office ID')).to eq '1T823E'
+              expect(value_for('CCMS reference number')).to eq '42226668880'
+              expect(value_for('DWP Overridden')).to eq 'No'
+              expect(value_for('Case Type')).to eq 'Passported'
+              expect(value_for('Single/Multi Proceedings')).to eq 'Single'
+              expect(value_for('Matter types')).to eq 'Domestic Abuse'
+              expect(value_for('Proceeding types selected')).to match(/^Meaning-DA\d{3,4}$/)
+              expect(value_for('Delegated functions used')).to eq 'Yes'
+              expect(value_for('Delegated functions dates')).to eq '2020-01-01'
+              expect(value_for('Delegated functions reported')).to eq '2020-02-21'
+            end
 
-          context 'DWP check result negative' do
-            let(:benefit_check_result_text) { 'No' }
-            it 'generates Non-Passported' do
-              expect(value_for('Case Type')).to eq 'Non-Passported'
+            context 'DWP check result negative' do
+              let(:benefit_check_result_text) { 'No' }
+              it 'generates Non-Passported' do
+                expect(value_for('Case Type')).to eq 'Non-Passported'
+              end
+            end
+
+            context 'Delegated functions not used' do
+              let(:legal_aid_application) { application_without_df }
+
+              it 'generates no' do
+                expect(value_for('Delegated functions used')).to eq 'No'
+              end
+
+              it 'generates an empty string for the used_on date' do
+                expect(value_for('Delegated functions dates')).to eq 'n/a'
+              end
+
+              it 'generates an empty string for the delegated function notification date' do
+                expect(value_for('Delegated functions reported')).to eq ''
+              end
+            end
+
+            context 'in scope of laspo' do
+              before { legal_aid_application.update!(in_scope_of_laspo: laspo_answer) }
+
+              context 'true' do
+                let(:laspo_answer) { true }
+                it 'populates with Yes' do
+                  expect(value_for('LASPO Question')).to eq 'Yes'
+                end
+              end
+
+              context 'false' do
+                let(:laspo_answer) { false }
+                it 'populates with Yes' do
+                  expect(value_for('LASPO Question')).to eq 'No'
+                end
+              end
+
+              context 'nil' do
+                let(:laspo_answer) { nil }
+                it 'populates with Yes' do
+                  expect(value_for('LASPO Question')).to eq ''
+                end
+              end
             end
           end
 
-          context 'Delegated functions not used' do
-            let(:legal_aid_application) { application_without_df }
-
-            it 'generates no' do
-              expect(value_for('Delegated functions used')).to eq 'No'
-            end
-
-            it 'generates an empty string for the used_on date' do
-              expect(value_for('Delegated functions date')).to eq ''
-            end
-
-            it 'generates an empty string for the delegated function notification date' do
-              expect(value_for('Delegated functions reported')).to eq ''
+          context 'multiple proceedings' do
+            before { setup_multiple_proceedings }
+            let(:expected_proceeding_types) { 'Meaning-DA001, Meaning-DA004, Meaning-SE013' }
+            it 'generates multiple proceedings content' do
+              expect(value_for('Single/Multi Proceedings')).to eq 'Multi'
+              expect(value_for('Matter types')).to eq 'Domestic Abuse, Section 8 orders'
+              expect(value_for('Proceeding types selected')).to eq expected_proceeding_types
             end
           end
         end
@@ -493,6 +550,22 @@ module Reports
           'Inheritance value',
           'Money owed value'
         ]
+      end
+
+      def setup_multiple_proceedings
+        legal_aid_application.application_proceeding_types.map(&:destroy)
+        %i[da001 da004 se013].each do |code|
+          pt = create :proceeding_type, code
+          apt = create :application_proceeding_type,
+                 legal_aid_application: legal_aid_application,
+                 proceeding_type: pt,
+                 lead_proceeding: code == :da001
+
+          create :chances_of_success,
+                 success_prospect: prospect,
+                 application_purpose: purpose,
+                 application_proceeding_type: apt
+        end
       end
     end
   end
