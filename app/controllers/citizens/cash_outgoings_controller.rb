@@ -6,6 +6,7 @@ module Citizens
 
     def update
       if aggregated_cash_outgoings.update(form_params)
+        update_no_cash_outgoings(form_params)
         go_forward
       else
         render :show
@@ -26,6 +27,11 @@ module Citizens
                  legal_aid_application_id: legal_aid_application[:id],
                  none_selected: params[:aggregated_cash_outgoings][:none_selected]
                })
+    end
+
+    def update_no_cash_outgoings(params)
+      val = params.permit(:none_selected)[:none_selected] == 'true'
+      legal_aid_application.update!(no_cash_outgoings: val)
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_130422) do
+ActiveRecord::Schema.define(version: 2021_07_12_112003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -492,6 +492,8 @@ ActiveRecord::Schema.define(version: 2021_06_24_130422) do
     t.boolean "emergency_cost_override"
     t.decimal "emergency_cost_requested"
     t.string "emergency_cost_reasons"
+    t.boolean "no_cash_income"
+    t.boolean "no_cash_outgoings"
     t.index ["applicant_id"], name: "index_legal_aid_applications_on_applicant_id"
     t.index ["application_ref"], name: "index_legal_aid_applications_on_application_ref", unique: true
     t.index ["discarded_at"], name: "index_legal_aid_applications_on_discarded_at"
