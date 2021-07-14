@@ -9,14 +9,13 @@ document.addEventListener('DOMContentLoaded', event => {
   */
 
   document.querySelectorAll('.deselect-group').forEach((container) => {
+    const control = document.querySelector(container.getAttribute('data-deselect-ctrl'))
 
-    let control = document.querySelector(container.getAttribute('data-deselect-ctrl'));
+    const checkboxMemory = []
+    const checkboxes = container.querySelectorAll('input[type=checkbox]')
 
-    let checkboxMemory = [];
-    let checkboxes = container.querySelectorAll('input[type=checkbox]');
-
-    let hiddenFieldMemory = [];
-    let hideableFields = container.querySelectorAll('.govuk-checkboxes__conditional');
+    const hiddenFieldMemory = []
+    const hideableFields = container.querySelectorAll('.govuk-checkboxes__conditional')
 
     /*
       Monitor changes of the control
@@ -28,34 +27,36 @@ document.addEventListener('DOMContentLoaded', event => {
         Set each checkbox based on its remembered state
     */
 
-    control.addEventListener("change", function() {
-      let controlChecked = this.checked;
+    control.addEventListener('change', function () {
+      const controlChecked = this.checked
 
       if (this.checked) {
-        control.checked = true;
-        control.value = true;
+        control.checked = true
+        control.value = true
       } else {
-        control.checked = false;
-        control.value = '';
+        control.checked = false
+        control.value = ''
       }
 
       checkboxes.forEach((checkbox, index) => {
-        if(controlChecked) {
-          checkboxMemory[index] = checkbox.checked;
-          checkbox.checked = false;
+        if (controlChecked) {
+          checkboxMemory[index] = checkbox.checked
+          checkbox.checked = false
         } else {
-          checkbox.checked = checkboxMemory[index];
+          checkbox.checked = checkboxMemory[index]
         }
       })
 
       hideableFields.forEach((hideableField, index) => {
         if (controlChecked) {
           if (!hideableField.classList.contains('govuk-checkboxes__conditional--hidden')) {
-            hideableField.classList.add('govuk-checkboxes__conditional--hidden');
-            hiddenFieldMemory[index] = true;
+            hideableField.classList.add('govuk-checkboxes__conditional--hidden')
+            hiddenFieldMemory[index] = true
+          } else {
+            hiddenFieldMemory[index] = false
           }
-        } else if (hiddenFieldMemory[index]){
-            hideableField.classList.remove('govuk-checkboxes__conditional--hidden');
+        } else if (hiddenFieldMemory[index]) {
+          hideableField.classList.remove('govuk-checkboxes__conditional--hidden')
         }
       })
     })
@@ -65,10 +66,10 @@ document.addEventListener('DOMContentLoaded', event => {
       If one is selected, deselect the control.
     */
     checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", function() {
-        if(checkbox.checked) {
-          control.checked = false;
-          control.value = '';
+      checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+          control.checked = false
+          control.value = ''
         }
       })
     })
