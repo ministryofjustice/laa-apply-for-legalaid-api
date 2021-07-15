@@ -92,9 +92,9 @@ en:
             used_delegated_functions_on:
               nothing_selected: Select proceedings you've used delegated functions for
               none_and_proceeding_selected: Select proceedings you've used delegated functions for or I have not used delegated functions
-              date_not_in_range: "The date you used delegated functions for %{meaning} cannot be before %{months}"
-              date_is_in_the_future: "The date you used delegated functions for %{meaning} must be in the past"
-              date_invalid: "Enter the date you used delegated functions for %{meaning}"
+              date_not_in_range: "The date you used delegated functions cannot be before %{months}"
+              date_is_in_the_future: The date you used delegated functions must be in the past
+              date_invalid: Enter the date you used delegated functions
               blank: Select a response
         aggregated_cash_income:
           credits:
