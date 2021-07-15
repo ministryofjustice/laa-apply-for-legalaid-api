@@ -62,16 +62,17 @@ module CCMS
         let(:error) { [CCMS::CCMSError, Savon::Error, StandardError] }
 
         before do
-          expect_any_instance_of(CCMS::Requestors::ReferenceDataRequestor).to receive(:call).and_raise(error.sample, 'oops')
+          fake_error = error.sample
+          expect_any_instance_of(CCMS::Requestors::ReferenceDataRequestor).to receive(:call).and_raise(fake_error, 'oops')
+          expect { subject.call }.to raise_error(fake_error, 'oops')
         end
 
-        it 'puts it into failed state' do
-          subject.call
-          expect(submission.aasm_state).to eq 'failed'
+        it 'does not change the state' do
+          expect(submission.aasm_state).to eq 'initialised'
         end
 
         it 'records the error in the submission history' do
-          expect { subject.call }.to change { CCMS::SubmissionHistory.count }.by(1)
+          expect(CCMS::SubmissionHistory.count).to eq 1
           expect(history.from_state).to eq 'initialised'
           expect(history.to_state).to eq 'failed'
           expect(history.success).to be false

@@ -14,6 +14,7 @@ module CCMS
         submission.obtain_document_ids!
       rescue *CCMS_SUBMISSION_ERRORS => e
         handle_exception(e, nil)
+        raise
       end
 
       private
@@ -52,7 +53,8 @@ module CCMS
       rescue *CCMS_SUBMISSION_ERRORS => e
         document.status = :failed
         document.save!
-        create_ccms_failure_history('applicant_ref_obtained', e, document_id_requestor.formatted_xml)
+        handle_exception(e, document_id_requestor.formatted_xml)
+        raise
       end
 
       def ccms_document_id(dir)

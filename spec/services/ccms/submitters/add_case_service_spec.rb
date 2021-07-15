@@ -107,16 +107,17 @@ module CCMS
           let(:error) { [CCMS::CCMSError, Savon::Error, StandardError] }
 
           before do
-            expect_any_instance_of(CCMS::Requestors::CaseAddRequestor).to receive(:call).and_raise(error.sample, 'oops')
+            fake_error = error.sample
+            expect_any_instance_of(CCMS::Requestors::CaseAddRequestor).to receive(:call).and_raise(fake_error, 'oops')
+            expect { subject.call }.to raise_error(fake_error, 'oops')
           end
 
-          it 'puts it into failed state' do
-            subject.call
-            expect(submission.aasm_state).to eq 'failed'
+          it 'does not change the state' do
+            expect(submission.aasm_state).to eq 'applicant_ref_obtained'
           end
 
           it 'records the error in the submission history' do
-            expect { subject.call }.to change { SubmissionHistory.count }.by(1)
+            expect(SubmissionHistory.count).to eq 1
             expect(history.from_state).to eq 'applicant_ref_obtained'
             expect(history.to_state).to eq 'failed'
             expect(history.success).to be false
@@ -136,20 +137,22 @@ module CCMS
         context 'unsuccessful response from CCMS adding a case' do
           let(:response_body) { ccms_data_from_file 'case_add_response_failure.xml' }
 
-          it 'puts it into failed state' do
-            subject.call
-            expect(submission.aasm_state).to eq 'failed'
+          before do
+            expect { subject.call }.to raise_error(CCMS::CCMSUnsuccessfulResponseError, "AddCaseService failed with unsuccessful response for submission: #{submission.id}")
+          end
+
+          it 'does not change state' do
+            expect(submission.aasm_state).to eq 'applicant_ref_obtained'
           end
 
           it 'records the error in the submission history' do
-            expect { subject.call }.to change { SubmissionHistory.count }.by(1)
+            expect(SubmissionHistory.count).to eq 1
             expect(history.from_state).to eq 'applicant_ref_obtained'
             expect(history.to_state).to eq 'failed'
             expect(history.success).to be false
           end
 
           it 'stores the reqeust body in the  submission history record' do
-            subject.call
             expect(history.request).to be_soap_envelope_with(
               command: 'ns4:CaseAddRQ',
               transaction_id: '20190301030405123456',
@@ -160,7 +163,6 @@ module CCMS
           end
 
           it 'stores the response body in the submission history record' do
-            subject.call
             expect(history.response).to eq response_body
           end
         end

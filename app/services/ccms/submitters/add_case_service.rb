@@ -7,15 +7,19 @@ module CCMS
 
       def call(options = {}) # rubocop:disable Metrics/AbcSize
         @options = options
-        if case_add_response_parser.success?
-          submission.case_add_transaction_id = case_add_requestor.transaction_request_id
-          submission.save!
-          create_history(from_state?, submission.aasm_state, xml_request, response) if submission.submit_case!
-        else
-          handle_unsuccessful_response(xml_request, response)
+
+        unless case_add_response_parser.success?
+          raise CCMSUnsuccessfulResponseError.new(response),
+                "AddCaseService failed with unsuccessful response for submission: #{submission.id}"
         end
+
+        submission.case_add_transaction_id = case_add_requestor.transaction_request_id
+        submission.save!
+        create_history(from_state?, submission.aasm_state, xml_request, response) if submission.submit_case!
       rescue *CCMS_SUBMISSION_ERRORS => e
-        handle_exception(e, xml_request)
+        failed_response = e.respond_to?(:response) ? e&.response : nil
+        handle_exception(e, xml_request, response: failed_response)
+        raise
       end
 
       private

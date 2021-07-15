@@ -7,6 +7,7 @@ module CCMS
         create_history(:initialised, submission.aasm_state, xml_request, response) if submission.obtain_case_ref!
       rescue *CCMS_SUBMISSION_ERRORS => e
         handle_exception(e, xml_request)
+        raise
       end
 
       def reference_id

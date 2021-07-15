@@ -64,8 +64,8 @@ RSpec.describe CCMS::Submitters::CheckCaseStatusService do
             expect { subject.call }.to change { submission.case_poll_count }.by 1
           end
 
-          it 'changes the state to failed' do
-            expect { subject.call }.to change { submission.aasm_state }.to 'failed'
+          it 'does not change the state' do
+            expect { subject.call }.not_to change { submission.aasm_state }
           end
 
           it 'writes a history record' do
@@ -133,21 +133,23 @@ RSpec.describe CCMS::Submitters::CheckCaseStatusService do
       let(:error) { [CCMS::CCMSError, Savon::Error, StandardError] }
 
       before do
+        fake_error = error.sample
         allow(case_add_status_requestor).to receive(:formatted_xml).and_return(case_add_status_request)
-        expect(case_add_status_requestor).to receive(:call).and_raise(error.sample, 'oops')
+        expect(case_add_status_requestor).to receive(:call).and_raise(fake_error, 'oops')
         expect(case_add_status_requestor).to receive(:transaction_request_id).and_return(transaction_request_id_in_example_response)
+        expect { subject.call }.to raise_error(fake_error, 'oops')
       end
 
       it 'increments the poll count' do
-        expect { subject.call }.to change { submission.case_poll_count }.by 1
+        expect(submission.case_poll_count).to eq 1
       end
 
-      it 'changes the state to failed' do
-        expect { subject.call }.to change { submission.aasm_state }.to 'failed'
+      it 'does not change the state' do
+        expect(submission.aasm_state).to eq 'case_submitted'
       end
 
       it 'records the error in the submission history' do
-        expect { subject.call }.to change { CCMS::SubmissionHistory.count }.by(1)
+        expect(CCMS::SubmissionHistory.count).to eq 1
         expect(history.from_state).to eq 'case_submitted'
         expect(history.to_state).to eq 'failed'
         expect(history.request).to eq case_add_status_request
@@ -158,7 +160,6 @@ RSpec.describe CCMS::Submitters::CheckCaseStatusService do
       end
 
       it 'stores the reqeust body in the  submission history record' do
-        subject.call
         expect(history.request).to be_soap_envelope_with(
           command: 'ns2:CaseAddUpdtStatusRQ',
           transaction_id: '20190101121530123456'
@@ -166,7 +167,6 @@ RSpec.describe CCMS::Submitters::CheckCaseStatusService do
       end
 
       it 'does not store the response body in the submission history record' do
-        subject.call
         expect(history.response).to be_nil
       end
     end

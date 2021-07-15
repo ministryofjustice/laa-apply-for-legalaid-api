@@ -10,10 +10,12 @@ RSpec.describe Reports::MeansReportCreator do
 
   describe '.call' do
     context 'V3 CFE Result' do
-      let(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v3_result, :generating_reports }
+      let(:legal_aid_application) do
+        create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v3_result, :generating_reports, ccms_submission: ccms_submission
+      end
+      let(:ccms_submission) { create :ccms_submission, :case_ref_obtained }
 
       it 'attaches means_report.pdf to the application' do
-        expect_any_instance_of(CCMS::Requestors::ReferenceDataRequestor).to receive(:call)
         expect(Providers::MeansReportsController.renderer).to receive(:render).and_call_original
         subject
         legal_aid_application.reload
@@ -24,14 +26,47 @@ RSpec.describe Reports::MeansReportCreator do
       it 'does not attach a report if one already exists' do
         create :attachment, :means_report, legal_aid_application: legal_aid_application
         expect { subject }.not_to change { Attachment.count }
+      end
+
+      context 'ccms case ref does not exist' do
+        let(:legal_aid_application) do
+          create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v3_result, :generating_reports, ccms_submission: ccms_submission
+        end
+        let(:ccms_submission) { create :ccms_submission }
+
+        before do
+          allow_any_instance_of(CCMS::Submission).to receive(:process!).with(any_args).and_return(true)
+        end
+
+        it 'processes the existing ccms submission' do
+          expect(legal_aid_application.reload.ccms_submission).to receive(:process!)
+          subject
+        end
+
+        context 'ccms submission does not exist' do
+          let(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v3_result, :generating_reports, ccms_submission: nil }
+
+          before do
+            allow(legal_aid_application).to receive(:case_ccms_reference).and_return(nil)
+            allow(legal_aid_application).to receive(:create_ccms_submission).and_return(ccms_submission)
+          end
+
+          it 'creates a ccms submission' do
+            expect(legal_aid_application.reload).to receive(:create_ccms_submission)
+            expect_any_instance_of(described_class).to receive(:process_ccms_submission)
+            subject
+          end
+        end
       end
     end
 
     context 'V4 CFE result' do
-      let(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v4_result, :generating_reports }
+      let(:legal_aid_application) do
+        create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v4_result, :generating_reports, ccms_submission: ccms_submission
+      end
+      let(:ccms_submission) { create :ccms_submission, :case_ref_obtained }
 
       it 'attaches means_report.pdf to the application' do
-        expect_any_instance_of(CCMS::Requestors::ReferenceDataRequestor).to receive(:call)
         expect(Providers::MeansReportsController.renderer).to receive(:render).and_call_original
         subject
         legal_aid_application.reload
@@ -42,6 +77,41 @@ RSpec.describe Reports::MeansReportCreator do
       it 'does not attach a report if one already exists' do
         create :attachment, :means_report, legal_aid_application: legal_aid_application
         expect { subject }.not_to change { Attachment.count }
+      end
+
+      context 'ccms case ref does not exist' do
+        let(:legal_aid_application) do
+          create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v4_result, :generating_reports, ccms_submission: ccms_submission
+        end
+        let(:ccms_submission) { create :ccms_submission }
+
+        before do
+          allow_any_instance_of(CCMS::Submission).to receive(:process!).with(any_args).and_return(true)
+        end
+
+        it 'processes the existing ccms submission' do
+          expect(legal_aid_application.reload.ccms_submission).to receive(:process!)
+          subject
+        end
+      end
+
+      context 'ccms submission does not exist' do
+        let(:legal_aid_application) { create :legal_aid_application, :with_proceeding_types, :with_everything, :with_cfe_v4_result, :generating_reports }
+
+        before do
+          RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
+          allow(legal_aid_application).to receive(:create_ccms_submission).and_return(ccms_submission)
+        end
+
+        after do
+          RSpec::Mocks.configuration.allow_message_expectations_on_nil = false
+        end
+
+        it 'creates a ccms submission' do
+          expect(legal_aid_application.reload).to receive(:create_ccms_submission)
+          expect(nil).to receive(:process!)
+          subject
+        end
       end
     end
   end
