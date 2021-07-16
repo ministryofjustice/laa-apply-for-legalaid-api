@@ -168,17 +168,19 @@ en:
           details_incorrect: I need to change this date
     confirm_multiple_delegated_functions:
       show:
-        heading: Confirm when you used delegated functions
-        search_help_example: One or more of the dates you entered is over one month old.
+        heading: Check delegated functions dates
+        radios_heading: Are these dates correct?
         error:
           blank_plural: Select yes if these dates are correct
           blank_singular: Select yes if this date is correct
         plural:
+          warning_text: One or more of the dates you entered is over one month old.
           details_correct: These dates are correct
-          details_incorrect: I need to change one or more of these dates
+          details_incorrect: No, I need to change one or more of these dates
         singular:
-          details_correct: This date is correct
-          details_incorrect: I need to change this date
+          warning_text: The date you entered is over one month old.
+          details_correct: Yes
+          details_incorrect: No, I need to change this date
     correct_dwp_results:
       show:
         error: Select yes if your client does not receive a passporting benefit.

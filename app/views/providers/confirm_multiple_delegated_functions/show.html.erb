@@ -7,11 +7,17 @@
 
   <%= page_template page_title: t('.heading', date: @used_multiple_delegated_functions_on), template: :basic, form: form do %>
 
+    <% scope = @multiple_dates_check ? 'plural' : 'singular' %>
+
       <%= govuk_fieldset_header page_title %>
 
-      <span class="govuk-hint govuk-!-margin-top-0">
-        <%= t '.search_help_example' %>
-      </span>
+      <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+          <span class="govuk-warning-text__assistive"><%= t(".#{scope}.warning_text") %></span>
+          <%= t(".#{scope}.warning_text") %>
+        </strong>
+      </div>
 
       <table class="govuk-table">
         <thead class="govuk-table__head">
@@ -32,18 +38,10 @@
         </tbody>
       </table>
 
-      <% scope = @multiple_dates_check ? 'plural' : 'singular' %>
-
-      <% options = [
-              OpenStruct.new(value: true, label: t(".#{scope}.details_correct")),
-              OpenStruct.new(value: false, label: t(".#{scope}.details_incorrect"))
-             ] %>
-
-      <%= form.govuk_collection_radio_buttons :confirm_multiple_delegated_functions_date,
-                                            options,
-                                            :value,
-                                            :label,
-                                            legend: { text: '' } %>
+      <%= form.govuk_radio_buttons_fieldset :confirm_multiple_delegated_functions_date, legend: { text: t('.radios_heading') } do %>
+        <%= form.govuk_radio_button :confirm_multiple_delegated_functions_date, true, link_errors: true, label: { text: t(".#{scope}.details_correct")} %>
+        <%= form.govuk_radio_button :confirm_multiple_delegated_functions_date, false, label: { text: t(".#{scope}.details_incorrect")} %>
+      <% end %>
 
       <div class="govuk-!-padding-bottom-4"></div>
       <%= next_action_buttons(show_draft: true, form: form) %>

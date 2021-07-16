@@ -26,7 +26,7 @@ module Providers
     end
 
     def multiple_dates_check?
-      @multiple_dates_check ||= legal_aid_application.application_proceeding_types.uniq(&:used_delegated_functions_on).many?
+      @multiple_dates_check ||= legal_aid_application.application_proceeding_types.uniq.select { |item| item.used_delegated_functions_on.present? }.many?
     end
 
     def application_proceeding_types
