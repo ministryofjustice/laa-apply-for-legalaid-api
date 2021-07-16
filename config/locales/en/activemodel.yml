@@ -311,6 +311,7 @@ en:
             emergency_cost_requested:
               blank: Enter a new emergency cost limit
               not_a_number: Cost limit must be an amount of money, like 2,500
+              greater_than_or_equal_to: The new cost limit cannot be less than £0
             emergency_cost_reasons:
               blank: Tell us why you need a higher cost limit
             own_home:

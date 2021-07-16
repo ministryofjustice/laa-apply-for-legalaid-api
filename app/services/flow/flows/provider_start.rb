@@ -67,7 +67,8 @@ module Flow
           forward: ->(_application, delegated_functions_used_over_month_ago) do
             delegated_functions_used_over_month_ago ? :confirm_multiple_delegated_functions : :limitations
           end,
-          check_answers: :check_provider_answers
+          check_answers: :check_provider_answers,
+          carry_on_sub_flow: true
         },
         confirm_multiple_delegated_functions: {
           path: ->(application) { urls.providers_legal_aid_application_confirm_multiple_delegated_functions_path(application) },
