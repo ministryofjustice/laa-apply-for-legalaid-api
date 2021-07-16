@@ -122,40 +122,39 @@ module LegalAidApplications
     end
 
     def validate_proceeding_dates
-      month_range = Date.current.ago(12.months).strftime('%d %m %Y')
+      month_range = Date.current.ago(12.months).strftime('%d %B %Y')
 
       delegated_functions_dates.each do |date_field|
-        meaning = date_field.label
         attr_name = date_field.method
         valid = !date_field.form_date_invalid?
         date = valid ? date_field.form_date : nil
 
-        update_errors(meaning, attr_name, valid, date, month_range)
+        update_errors(attr_name, valid, date, month_range)
       end
     end
 
-    def update_errors(meaning, attr_name, valid, date, month_range)
-      error_date_invalid(meaning, attr_name, valid)
-      error_not_in_range(meaning, attr_name, valid, date, month_range)
-      error_in_future(meaning, attr_name, valid, date)
+    def update_errors(attr_name, valid, date, month_range)
+      error_date_invalid(attr_name, valid)
+      error_not_in_range(attr_name, valid, date, month_range)
+      error_in_future(attr_name, valid, date)
     end
 
-    def error_date_invalid(meaning, attr_name, valid)
+    def error_date_invalid(attr_name, valid)
       return if valid
 
-      errors.add(attr_name, I18n.t("#{error_base_path}.date_invalid", meaning: meaning))
+      errors.add(attr_name, I18n.t("#{error_base_path}.date_invalid"))
     end
 
-    def error_not_in_range(meaning, attr_name, valid, date, month_range)
+    def error_not_in_range(attr_name, valid, date, month_range)
       return unless valid && date < Date.current - 12.months
 
-      errors.add(attr_name, I18n.t("#{error_base_path}.date_not_in_range", months: month_range, meaning: meaning))
+      errors.add(attr_name, I18n.t("#{error_base_path}.date_not_in_range", months: month_range))
     end
 
-    def error_in_future(meaning, attr_name, valid, date)
+    def error_in_future(attr_name, valid, date)
       return unless valid && date > Date.current
 
-      errors.add(attr_name, I18n.t("#{error_base_path}.date_is_in_the_future", meaning: meaning))
+      errors.add(attr_name, I18n.t("#{error_base_path}.date_is_in_the_future"))
     end
 
     def error_base_path
