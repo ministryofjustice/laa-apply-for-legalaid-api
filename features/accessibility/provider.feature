@@ -44,7 +44,8 @@ Feature: Provider accessibility
 
   @javascript @vcr
   Scenario: I complete the financial assessment eligibility section for a non-passported application
-    Given I start a non-passported application
+    Given I complete the non-passported journey as far as check your answers
+    Then I click 'Save and continue'
     Then I should be on a page showing "We need to check your client's financial eligibility"
     When I click 'Continue'
     Then I should be on a page showing 'Is your client employed?'

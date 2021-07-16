@@ -1,138 +1,13 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: https://api.os.uk/search/places/v1/postcode?key=<ORDNANACE_SURVEY_API_KEY>&lr=EN&postcode=SW1A1AA
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - Faraday v1.0.0
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Fri, 29 May 2020 14:12:31 GMT
-      Content-Type:
-      - application/json;charset=UTF-8
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      Tx-Id:
-      - 1590761551408:408
-      Status:
-      - success
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "header" : {
-            "uri" : "https://api.os.uk/search/places/v1/postcode?lr=EN&postcode=SW1A1AA",
-            "query" : "postcode=SW1A1AA",
-            "offset" : 0,
-            "totalresults" : 1,
-            "format" : "JSON",
-            "dataset" : "DPA",
-            "lr" : "EN",
-            "maxresults" : 100,
-            "epoch" : "75",
-            "output_srs" : "EPSG:27700"
-          },
-          "results" : [ {
-            "DPA" : {
-              "UPRN" : "10033544614",
-              "UDPRN" : "23747212",
-              "ADDRESS" : "BUCKINGHAM PALACE, LONDON, SW1A 1AA",
-              "ORGANISATION_NAME" : "BUCKINGHAM PALACE",
-              "POST_TOWN" : "LONDON",
-              "POSTCODE" : "SW1A 1AA",
-              "RPC" : "1",
-              "X_COORDINATE" : 529090.0,
-              "Y_COORDINATE" : 179645.0,
-              "STATUS" : "APPROVED",
-              "LOGICAL_STATUS_CODE" : "1",
-              "CLASSIFICATION_CODE" : "PP",
-              "CLASSIFICATION_CODE_DESCRIPTION" : "Property Shell",
-              "LOCAL_CUSTODIAN_CODE" : 5990,
-              "LOCAL_CUSTODIAN_CODE_DESCRIPTION" : "CITY OF WESTMINSTER",
-              "POSTAL_ADDRESS_CODE" : "D",
-              "POSTAL_ADDRESS_CODE_DESCRIPTION" : "A record which is linked to PAF",
-              "BLPU_STATE_CODE" : "2",
-              "BLPU_STATE_CODE_DESCRIPTION" : "In use",
-              "TOPOGRAPHY_LAYER_TOID" : "osgb1000042921247",
-              "LAST_UPDATE_DATE" : "10/02/2016",
-              "ENTRY_DATE" : "27/04/2003",
-              "BLPU_STATE_DATE" : "27/04/2003",
-              "LANGUAGE" : "EN",
-              "MATCH" : 1.0,
-              "MATCH_DESCRIPTION" : "EXACT"
-            }
-          } ]
-        }
-  recorded_at: Fri, 29 May 2020 14:12:31 GMT
-- request:
     method: post
     uri: https://benefitchecker.stg.legalservices.gov.uk/lsx/lsc-services/benefitChecker?wsdl
     body:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="https://lsc.gov.uk/benefitchecker/service/1.0/API_1.0_Check"
-        xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><wsdl:check><clientReference>57c828de-bf01-4f59-a79c-20ef5a88e57b</clientReference><nino>AB293483A</nino><surname>FAIL</surname><dateOfBirth>19801010</dateOfBirth><dateOfAward>20200529</dateOfAward><lscServiceName><BC_LSC_SERVICE_NAME></lscServiceName><clientOrgId><BC_CLIENT_ORG_ID></clientOrgId><clientUserId><BC_CLIENT_USER_ID></clientUserId></wsdl:check></env:Body></env:Envelope>
-    headers:
-      Soapaction:
-      - '"check"'
-      Content-Type:
-      - text/xml;charset=UTF-8
-      Content-Length:
-      - '649'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: ''
-    headers:
-      Date:
-      - Fri, 29 May 2020 14:12:32 GMT
-      Content-Type:
-      - text/xml;charset=utf-8
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Amzn-Trace-Id:
-      - Root=1-5ed11850-49b398441f852b1691c0aca3;
-      Vary:
-      - Accept-Encoding
-    body:
-      encoding: ASCII-8BIT
-      string: <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><benefitCheckerResponse
-        xmlns="https://lsc.gov.uk/benefitchecker/service/1.0/API_1.0_Check"><ns1:originalClientRef
-        xmlns:ns1="http://lsc.gov.uk/benefitchecker/data/1.0">57c828de-bf01-4f59-a79c-20ef5a88e57b</ns1:originalClientRef><ns2:benefitCheckerStatus
-        xmlns:ns2="http://lsc.gov.uk/benefitchecker/data/1.0">Undetermined</ns2:benefitCheckerStatus><ns3:confirmationRef
-        xmlns:ns3="http://lsc.gov.uk/benefitchecker/data/1.0">T1590761552645</ns3:confirmationRef></benefitCheckerResponse></soapenv:Body></soapenv:Envelope>
-  recorded_at: Fri, 29 May 2020 14:12:32 GMT
-- request:
-    method: post
-    uri: https://benefitchecker.stg.legalservices.gov.uk/lsx/lsc-services/benefitChecker?wsdl
-    body:
-      encoding: UTF-8
-      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="https://lsc.gov.uk/benefitchecker/service/1.0/API_1.0_Check"
-        xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><wsdl:check><clientReference>57c828de-bf01-4f59-a79c-20ef5a88e57b</clientReference><nino>JA293483A</nino><surname>WALKER</surname><dateOfBirth>19800110</dateOfBirth><dateOfAward>20200529</dateOfAward><lscServiceName><BC_LSC_SERVICE_NAME></lscServiceName><clientOrgId><BC_CLIENT_ORG_ID></clientOrgId><clientUserId><BC_CLIENT_USER_ID></clientUserId></wsdl:check></env:Body></env:Envelope>
+        xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><wsdl:check><clientReference>1e15da1c-a2c6-41d7-a47c-12bb7976cf39</clientReference><nino>JA293483A</nino><surname>WALKER</surname><dateOfBirth>19800110</dateOfBirth><dateOfAward>20210713</dateOfAward><lscServiceName><BC_LSC_SERVICE_NAME></lscServiceName><clientOrgId><BC_CLIENT_ORG_ID></clientOrgId><clientUserId><BC_CLIENT_USER_ID></clientUserId></wsdl:check></env:Body></env:Envelope>
     headers:
       Soapaction:
       - '"check"'
@@ -152,7 +27,7 @@ http_interactions:
       message: ''
     headers:
       Date:
-      - Fri, 29 May 2020 14:12:33 GMT
+      - Tue, 13 Jul 2021 16:37:59 GMT
       Content-Type:
       - text/xml;charset=utf-8
       Transfer-Encoding:
@@ -160,7 +35,7 @@ http_interactions:
       Connection:
       - keep-alive
       X-Amzn-Trace-Id:
-      - Root=1-5ed11851-9f524ed4fd8e34de0b7db4e8;
+      - Root=1-60edc167-2010364859cadfaf031c7519;
       Vary:
       - Accept-Encoding
     body:
@@ -168,8 +43,8 @@ http_interactions:
       string: <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><benefitCheckerResponse
         xmlns="https://lsc.gov.uk/benefitchecker/service/1.0/API_1.0_Check"><ns1:originalClientRef
-        xmlns:ns1="http://lsc.gov.uk/benefitchecker/data/1.0">57c828de-bf01-4f59-a79c-20ef5a88e57b</ns1:originalClientRef><ns2:benefitCheckerStatus
+        xmlns:ns1="http://lsc.gov.uk/benefitchecker/data/1.0">1e15da1c-a2c6-41d7-a47c-12bb7976cf39</ns1:originalClientRef><ns2:benefitCheckerStatus
         xmlns:ns2="http://lsc.gov.uk/benefitchecker/data/1.0">Yes</ns2:benefitCheckerStatus><ns3:confirmationRef
-        xmlns:ns3="http://lsc.gov.uk/benefitchecker/data/1.0">T1590761553701</ns3:confirmationRef></benefitCheckerResponse></soapenv:Body></soapenv:Envelope>
-  recorded_at: Fri, 29 May 2020 14:12:33 GMT
+        xmlns:ns3="http://lsc.gov.uk/benefitchecker/data/1.0">T1626194279883</ns3:confirmationRef></benefitCheckerResponse></soapenv:Body></soapenv:Envelope>
+  recorded_at: Tue, 13 Jul 2021 16:37:59 GMT
 recorded_with: VCR 6.0.0

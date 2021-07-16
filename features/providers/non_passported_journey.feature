@@ -89,12 +89,7 @@ Feature: Non-passported applicant journeys
     Then I choose "Yes"
     Then I click 'Save and continue'
     Then I should be on the 'dependants/new' page showing "Enter dependant details"
-    When I fill "Name" with "Wednesday Adams"
-    And I enter a date of birth for a 17 year old
-    And I choose "They're a child relative"
-    And I choose option "dependant-in-full-time-education-field"
-    And I choose option "dependant-has-income-field"
-    And I choose option "dependant-has-assets-more-than-threshold-field"
+    When I add the details for a child dependant
     And I click 'Save and continue'
     Then I should be on the 'has_other_dependants' page showing "Does your client have any other dependants?"
     When I choose "Yes"
@@ -286,7 +281,12 @@ Feature: Non-passported applicant journeys
 
   @javascript @vcr
   Scenario: I want the check_provider_answers page to correctly display while waiting for client to provide data
-    Given I start a non-passported application after a failed benefit check
+    Given I start the application with a negative benefit check result
+    Then I should be on a page showing "We need to check your client's financial eligibility"
+    Then I click 'Continue'
+    Then I should be on a page showing 'Is your client employed?'
+    Then I choose 'No'
+    Then I click 'Save and continue'
     Then I should be on the 'does-client-use-online-banking' page showing 'Check if you can continue using this service'
     Then I choose 'Yes'
     And I click 'Save and continue'

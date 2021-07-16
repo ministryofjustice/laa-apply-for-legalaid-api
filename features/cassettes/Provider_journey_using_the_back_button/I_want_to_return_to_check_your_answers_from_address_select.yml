@@ -1,0 +1,192 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.os.uk/search/places/v1/postcode?key=<ORDNANACE_SURVEY_API_KEY>&lr=EN&postcode=SW1H9EA
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.4.3
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 09 Jul 2021 15:38:30 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Origin,Accept-Encoding,key
+      Omse-Category:
+      - premium
+      Omse-Transaction-Count:
+      - '60'
+      Omse-Premium-Count:
+      - '0'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, accept, key, authorization, content-type
+      Access-Control-Max-Age:
+      - '3628800'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "header" : {
+            "uri" : "https://api.os.uk/search/places/v1/postcode?lr=EN&postcode=SW1H9EA",
+            "query" : "postcode=SW1H9EA",
+            "offset" : 0,
+            "totalresults" : 4,
+            "format" : "JSON",
+            "dataset" : "DPA",
+            "lr" : "EN",
+            "maxresults" : 100,
+            "epoch" : "85",
+            "output_srs" : "EPSG:27700"
+          },
+          "results" : [ {
+            "DPA" : {
+              "UPRN" : "100023337883",
+              "UDPRN" : "23749699",
+              "ADDRESS" : "SUPER FIRM LTD, 84, PETTY FRANCE, LONDON, SW1H 9EA",
+              "ORGANISATION_NAME" : "SUPER FIRM LTD",
+              "BUILDING_NUMBER" : "84",
+              "THOROUGHFARE_NAME" : "PETTY FRANCE",
+              "POST_TOWN" : "LONDON",
+              "POSTCODE" : "SW1H 9EA",
+              "RPC" : "2",
+              "X_COORDINATE" : 529526.39,
+              "Y_COORDINATE" : 179490.43,
+              "STATUS" : "APPROVED",
+              "LOGICAL_STATUS_CODE" : "1",
+              "CLASSIFICATION_CODE" : "CR07",
+              "CLASSIFICATION_CODE_DESCRIPTION" : "Restaurant / Cafeteria",
+              "LOCAL_CUSTODIAN_CODE" : 5990,
+              "LOCAL_CUSTODIAN_CODE_DESCRIPTION" : "CITY OF WESTMINSTER",
+              "POSTAL_ADDRESS_CODE" : "D",
+              "POSTAL_ADDRESS_CODE_DESCRIPTION" : "A record which is linked to PAF",
+              "BLPU_STATE_CODE" : "2",
+              "BLPU_STATE_CODE_DESCRIPTION" : "In use",
+              "TOPOGRAPHY_LAYER_TOID" : "osgb1000042216527",
+              "LAST_UPDATE_DATE" : "10/02/2016",
+              "ENTRY_DATE" : "19/03/2001",
+              "BLPU_STATE_DATE" : "19/03/2001",
+              "LANGUAGE" : "EN",
+              "MATCH" : 1.0,
+              "MATCH_DESCRIPTION" : "EXACT"
+            }
+          }, {
+            "DPA" : {
+              "UPRN" : "100023337884",
+              "UDPRN" : "23749702",
+              "ADDRESS" : "TRANSPORT FOR LONDON, 98, PETTY FRANCE, LONDON, SW1H 9EA",
+              "ORGANISATION_NAME" : "TRANSPORT FOR LONDON",
+              "BUILDING_NUMBER" : "98",
+              "THOROUGHFARE_NAME" : "PETTY FRANCE",
+              "POST_TOWN" : "LONDON",
+              "POSTCODE" : "SW1H 9EA",
+              "RPC" : "1",
+              "X_COORDINATE" : 529558.47,
+              "Y_COORDINATE" : 179482.17,
+              "STATUS" : "APPROVED",
+              "LOGICAL_STATUS_CODE" : "1",
+              "CLASSIFICATION_CODE" : "PP",
+              "CLASSIFICATION_CODE_DESCRIPTION" : "Property Shell",
+              "LOCAL_CUSTODIAN_CODE" : 5990,
+              "LOCAL_CUSTODIAN_CODE_DESCRIPTION" : "CITY OF WESTMINSTER",
+              "POSTAL_ADDRESS_CODE" : "D",
+              "POSTAL_ADDRESS_CODE_DESCRIPTION" : "A record which is linked to PAF",
+              "BLPU_STATE_CODE" : "2",
+              "BLPU_STATE_CODE_DESCRIPTION" : "In use",
+              "TOPOGRAPHY_LAYER_TOID" : "osgb1000042217066",
+              "LAST_UPDATE_DATE" : "30/03/2021",
+              "ENTRY_DATE" : "19/03/2001",
+              "BLPU_STATE_DATE" : "19/03/2001",
+              "LANGUAGE" : "EN",
+              "MATCH" : 1.0,
+              "MATCH_DESCRIPTION" : "EXACT"
+            }
+          }, {
+            "DPA" : {
+              "UPRN" : "100023337882",
+              "UDPRN" : "23749700",
+              "ADDRESS" : "100, PETTY FRANCE, LONDON, SW1H 9EA",
+              "BUILDING_NUMBER" : "100",
+              "THOROUGHFARE_NAME" : "PETTY FRANCE",
+              "POST_TOWN" : "LONDON",
+              "POSTCODE" : "SW1H 9EA",
+              "RPC" : "2",
+              "X_COORDINATE" : 529619.99,
+              "Y_COORDINATE" : 179499.2,
+              "STATUS" : "APPROVED",
+              "LOGICAL_STATUS_CODE" : "1",
+              "CLASSIFICATION_CODE" : "RD",
+              "CLASSIFICATION_CODE_DESCRIPTION" : "Dwelling",
+              "LOCAL_CUSTODIAN_CODE" : 5990,
+              "LOCAL_CUSTODIAN_CODE_DESCRIPTION" : "CITY OF WESTMINSTER",
+              "POSTAL_ADDRESS_CODE" : "D",
+              "POSTAL_ADDRESS_CODE_DESCRIPTION" : "A record which is linked to PAF",
+              "BLPU_STATE_CODE" : "2",
+              "BLPU_STATE_CODE_DESCRIPTION" : "In use",
+              "TOPOGRAPHY_LAYER_TOID" : "osgb1000042216526",
+              "LAST_UPDATE_DATE" : "12/11/2018",
+              "ENTRY_DATE" : "19/03/2001",
+              "BLPU_STATE_DATE" : "19/03/2001",
+              "LANGUAGE" : "EN",
+              "MATCH" : 1.0,
+              "MATCH_DESCRIPTION" : "EXACT"
+            }
+          }, {
+            "DPA" : {
+              "UPRN" : "10033648845",
+              "UDPRN" : "54770395",
+              "ADDRESS" : "C P S, 102, PETTY FRANCE, LONDON, SW1H 9EA",
+              "ORGANISATION_NAME" : "C P S",
+              "BUILDING_NUMBER" : "102",
+              "THOROUGHFARE_NAME" : "PETTY FRANCE",
+              "POST_TOWN" : "LONDON",
+              "POSTCODE" : "SW1H 9EA",
+              "RPC" : "2",
+              "X_COORDINATE" : 529576.0,
+              "Y_COORDINATE" : 179549.0,
+              "STATUS" : "APPROVED",
+              "LOGICAL_STATUS_CODE" : "1",
+              "CLASSIFICATION_CODE" : "CO01",
+              "CLASSIFICATION_CODE_DESCRIPTION" : "Office / Work Studio",
+              "LOCAL_CUSTODIAN_CODE" : 5990,
+              "LOCAL_CUSTODIAN_CODE_DESCRIPTION" : "CITY OF WESTMINSTER",
+              "POSTAL_ADDRESS_CODE" : "D",
+              "POSTAL_ADDRESS_CODE_DESCRIPTION" : "A record which is linked to PAF",
+              "BLPU_STATE_CODE" : "2",
+              "BLPU_STATE_CODE_DESCRIPTION" : "In use",
+              "TOPOGRAPHY_LAYER_TOID" : "osgb1000001796535716",
+              "PARENT_UPRN" : "10033604583",
+              "LAST_UPDATE_DATE" : "06/07/2020",
+              "ENTRY_DATE" : "15/06/2020",
+              "BLPU_STATE_DATE" : "15/06/2020",
+              "LANGUAGE" : "EN",
+              "MATCH" : 1.0,
+              "MATCH_DESCRIPTION" : "EXACT"
+            }
+          } ]
+        }
+  recorded_at: Fri, 09 Jul 2021 15:38:31 GMT
+recorded_with: VCR 6.0.0
